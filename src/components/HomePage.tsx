@@ -52,7 +52,7 @@ export function HomePage() {
         <div className="max-w-4xl mx-auto px-4 py-6">
           <h1 className="text-2xl font-bold text-warm-black">Project Atlas</h1>
           <p className="text-warm-muted mt-1">
-            Understand the real disagreement
+            See the full picture on controversial topics
           </p>
         </div>
       </header>
