@@ -122,6 +122,46 @@ const sources: Record<string, Source> = {
     date: '2025',
     type: 'analysis',
   },
+  breitbartTariffs: {
+    id: 'breitbart-tariffs',
+    title: 'Breitbart Business Digest: Trump\'s Tariffs Are Already Working',
+    outlet: 'Breitbart',
+    url: 'https://www.breitbart.com/economy/2025/04/08/breitbart-business-digest-trumps-tariffs-are-already-working/',
+    date: 'April 2025',
+    type: 'media',
+  },
+  stLouisFed: {
+    id: 'stlouis-fed',
+    title: 'How Tariffs Are Affecting Prices in 2025',
+    outlet: 'St. Louis Federal Reserve',
+    url: 'https://www.stlouisfed.org/on-the-economy/2025/oct/how-tariffs-are-affecting-prices-2025',
+    date: 'October 2025',
+    type: 'analysis',
+  },
+  brownEconomist: {
+    id: 'brown-economist',
+    title: 'A global economist\'s take on tariffs: "American consumers will get hurt"',
+    outlet: 'Brown University',
+    url: 'https://www.brown.edu/news/2025-02-03/tariffs',
+    date: 'February 2025',
+    type: 'analysis',
+  },
+  cpaProTariff: {
+    id: 'cpa-pro-tariff',
+    title: 'Tariffs Are Not Causing Inflation: Breaking Down August 2025 CPI',
+    outlet: 'Coalition For A Prosperous America',
+    url: 'https://prosperousamerica.org/tariffs-are-not-causing-inflation-breaking-down-august-2025-cpi/',
+    date: 'August 2025',
+    type: 'analysis',
+  },
+  yaleDistributional: {
+    id: 'yale-distributional',
+    title: 'Where We Stand: The Fiscal, Economic, and Distributional Effects of All U.S. Tariffs Enacted in 2025',
+    outlet: 'Yale Budget Lab',
+    url: 'https://budgetlab.yale.edu/research/where-we-stand-fiscal-economic-and-distributional-effects-all-us-tariffs-enacted-2025-through-april',
+    date: '2025',
+    type: 'analysis',
+  },
 };
 
 export const tariffsQuestion: Question = {

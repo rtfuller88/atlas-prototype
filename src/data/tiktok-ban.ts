@@ -98,6 +98,46 @@ const sources: Record<string, Source> = {
     date: 'January 17, 2025',
     type: 'media',
   },
+  foxOpinion: {
+    id: 'fox-opinion',
+    title: 'TikTok is a national security threat. This is what the Trump administration needs to do',
+    outlet: 'Fox News',
+    url: 'https://www.foxnews.com/opinion/tiktok-national-security-threat-what-trump-administration-needs-do',
+    date: '2025',
+    type: 'media',
+  },
+  heritageFoundation: {
+    id: 'heritage-foundation',
+    title: 'Don\'t Save TikTok, Save America From TikTok',
+    outlet: 'Heritage Foundation',
+    url: 'https://www.heritage.org/big-tech/commentary/dont-save-tiktok-save-america-tiktok',
+    date: '2025',
+    type: 'analysis',
+  },
+  acluScotusRuling: {
+    id: 'aclu-scotus-ruling',
+    title: 'ACLU Slams Supreme Court TikTok Ruling',
+    outlet: 'ACLU',
+    url: 'https://www.aclu.org/press-releases/aclu-slams-supreme-court-tiktok-ruling',
+    date: 'January 2025',
+    type: 'analysis',
+  },
+  cbsLivelihoods: {
+    id: 'cbs-livelihoods',
+    title: 'If TikTok goes dark, some say they\'ll lose livelihoods',
+    outlet: 'CBS News',
+    url: 'https://www.cbsnews.com/news/tik-tok-ban-small-businesses-creators/',
+    date: 'January 2025',
+    type: 'media',
+  },
+  interceptHypothetical: {
+    id: 'intercept-hypothetical',
+    title: 'TikTok Threat Is Purely Hypothetical, U.S. Intelligence Admits',
+    outlet: 'The Intercept',
+    url: 'https://theintercept.com/2024/03/16/tiktok-china-security-threat/',
+    date: 'March 2024',
+    type: 'media',
+  },
 };
 
 export const tiktokBanQuestion: Question = {

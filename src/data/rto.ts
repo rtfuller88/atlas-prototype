@@ -106,6 +106,38 @@ const sources: Record<string, Source> = {
     date: '2024',
     type: 'analysis',
   },
+  hrDiveBrainDrain: {
+    id: 'hr-dive-brain-drain',
+    title: 'RTO mandates lead to "brain drain" attrition, researchers say',
+    outlet: 'HR Dive',
+    url: 'https://www.hrdive.com/news/rto-mandates-lead-to-brain-drain-attrition/734989/',
+    date: '2024',
+    type: 'analysis',
+  },
+  hubstaffTrends: {
+    id: 'hubstaff-trends',
+    title: 'RTO Mandate Trends in 2025: Why Forcing Employees Back to the Office Hurts Business',
+    outlet: 'Hubstaff',
+    url: 'https://hubstaff.com/blog/rto-mandate-trends/',
+    date: '2025',
+    type: 'analysis',
+  },
+  workwaysHiddenCosts: {
+    id: 'workways-hidden-costs',
+    title: 'Flexible Work vs. RTO: The Hidden Costs of Office Mandates',
+    outlet: 'Workways',
+    url: 'https://www.workways.com/the-great-rto-gamble-why-forcing-employees-back-to-the-office-can-backfire/',
+    date: '2025',
+    type: 'analysis',
+  },
+  myPerfectResume: {
+    id: 'myperfectresume',
+    title: 'Remote Work Report: 51% Would Quit Over RTO Mandates',
+    outlet: 'MyPerfectResume',
+    url: 'https://www.myperfectresume.com/career-center/careers/basics/remote-work-divide',
+    date: '2025',
+    type: 'analysis',
+  },
 };
 
 export const rtoQuestion: Question = {
