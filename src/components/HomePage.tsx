@@ -1,6 +1,49 @@
 import { stories } from '../data/stories';
 import { StoryCard } from './StoryCard';
 
+function AddTopicCard() {
+  return (
+    <div className="relative bg-white rounded-xl shadow-sm border-2 border-dashed border-gray-300 p-5 opacity-60 cursor-not-allowed">
+      {/* Coming Soon Badge */}
+      <div className="absolute top-3 right-3">
+        <span className="bg-amber-100 text-amber-700 text-xs font-semibold px-2 py-1 rounded-full">
+          Coming Soon
+        </span>
+      </div>
+
+      {/* Icon */}
+      <div className="w-10 h-10 rounded-lg bg-gray-100 flex items-center justify-center mb-3">
+        <span className="text-xl">➕</span>
+      </div>
+
+      {/* Title */}
+      <h3 className="font-semibold text-warm-black mb-2">
+        Add a New Topic
+      </h3>
+
+      {/* Description */}
+      <p className="text-sm text-warm-muted mb-4">
+        Get an epistemic analysis for any controversial topic you care about.
+      </p>
+
+      {/* Disabled Input */}
+      <div className="relative">
+        <input
+          type="text"
+          placeholder="Enter any topic..."
+          disabled
+          className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg bg-gray-50 text-gray-400 cursor-not-allowed"
+        />
+      </div>
+
+      {/* Hint */}
+      <p className="text-xs text-warm-muted mt-3 italic">
+        Soon you'll be able to analyze any topic: "Is remote work better?", "Should we have universal healthcare?", etc.
+      </p>
+    </div>
+  );
+}
+
 export function HomePage() {
   return (
     <div className="min-h-screen bg-warm-bg">
@@ -29,6 +72,8 @@ export function HomePage() {
           {stories.map((story) => (
             <StoryCard key={story.id} story={story} />
           ))}
+          {/* Add Topic Card */}
+          <AddTopicCard />
         </div>
 
         {/* Footer */}

@@ -55,6 +55,17 @@ export const stories: StoryMeta[] = [
     assertionCount: 8,
     divergenceLevel: 'medium',
   },
+  {
+    id: 'social-media-kids',
+    title: 'Social Media Ban for Kids',
+    subtitle: 'Should countries ban social media for children under 16?',
+    category: 'Technology',
+    categoryIcon: '📱',
+    date: 'December 2025',
+    groupCount: 4,
+    assertionCount: 8,
+    divergenceLevel: 'medium',
+  },
 ];
 
 export function getStoryById(id: string): StoryMeta | undefined {

@@ -3,6 +3,7 @@ import { rtoQuestion } from './data/rto';
 import { iceShootingQuestion } from './data/ice-shooting';
 import { tiktokBanQuestion } from './data/tiktok-ban';
 import { tariffsQuestion } from './data/tariffs';
+import { socialMediaKidsQuestion } from './data/social-media-kids';
 import { GuidedAnalysis } from './components/GuidedAnalysis';
 import { HomePage } from './components/HomePage';
 import { Question } from './types';
@@ -13,6 +14,7 @@ const STORIES: Record<string, Question> = {
   'tiktok-ban': tiktokBanQuestion,
   'tariffs': tariffsQuestion,
   'rto-mandate': rtoQuestion,
+  'social-media-kids': socialMediaKidsQuestion,
 };
 
 function StoryPage() {
