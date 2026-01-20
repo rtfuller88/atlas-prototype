@@ -110,6 +110,7 @@ export const iceShootingQuestion: Question = {
     whatHappened: 'During a large-scale ICE enforcement operation, agent Jonathan Ross shot and killed Renee Good, a 37-year-old U.S. citizen, mother, and poet. Good had stopped her SUV in a residential street and was whistling to alert neighbors to ICE presence — a common practice among community observers. DHS claims she attempted to run over officers; multiple videos show a more ambiguous sequence.',
     whyControversial: 'Federal officials labeled Good\'s actions "domestic terrorism." Video evidence analyzed by multiple news organizations appears to contradict key elements of the official account. The FBI revoked Minnesota investigators\' access to evidence, and six federal prosecutors in Minnesota resigned over the Justice Department\'s handling of the case. Polling shows Americans deeply divided along partisan lines.',
     previewInsight: 'We\'ll break down this issue into its component claims, show you where there\'s more agreement than the debate suggests, and identify the specific points where reasonable people genuinely disagree — and why.',
+    pollingSummary: 'Sharply divided along partisan lines: 56% say shooting was unjustified, 33% say justified (Quinnipiac). Split widens dramatically by party — 91% of Democrats vs. 24% of Republicans say unjustified.',
   },
 
   claims: [
@@ -197,11 +198,48 @@ export const iceShootingQuestion: Question = {
     },
   ] as RelatedDivide[],
 
+  framingComparison: {
+    sideALabel: 'Official/Conservative framing',
+    sideAFraming: [
+      'Driver attempted to run over federal officers',
+      'Domestic terrorism',
+      'Interfering with lawful enforcement',
+    ],
+    sideBLabel: 'Investigative/Progressive framing',
+    sideBFraming: [
+      'Community observer whistling to warn neighbors',
+      'Video contradicts official account',
+      'U.S. citizen, mother, poet',
+    ],
+  },
+
+  mediaEcosystemConfig: {
+    beliefTrueLabel: 'Justified',
+    beliefFalseLabel: 'Not Justified',
+    keyPatternInsight: 'Groups relying on official government statements and law enforcement associations tend to conclude the shooting was justified. Groups relying on investigative journalism and primary video analysis tend to conclude it was not. Evidence-based groups on both sides share some sources — showing that even the same evidence can support different conclusions depending on how ambiguity is interpreted.',
+  },
+
+  pollingData: {
+    source: 'Quinnipiac University Poll, January 2026',
+    sourceUrl: 'https://abcnews.go.com/Politics/majority-americans-ice-agents-shooting-good-unjustified-inappropriate/story?id=129253596',
+    segments: [
+      { label: 'Unjustified', percentage: 56, color: '#DC2626' },
+      { label: 'Justified', percentage: 33, color: '#65A30D' },
+      { label: 'Unsure', percentage: 11, color: '#6B7280' },
+    ],
+    note: 'Sharp partisan divide: 91% of Democrats say unjustified vs. only 24% of Republicans. 76% of Republicans say justified.',
+  },
+
   clusters: [
     {
       id: 'cluster-trust',
       label: 'Justified — Trusts Official Account',
       description: 'Accepts law enforcement accounts as credible by default; less focused on parsing video evidence',
+      prevalence: {
+        percentage: 25,
+        label: 'significant',
+        description: 'Primarily Republican voters who trust law enforcement by default',
+      },
       characteristics: {
         infoSources: ['Official government statements', 'Fox News', 'Law enforcement associations'],
         demographicNotes: 'Quinnipiac poll: 76% of Republicans said the shooting was justified',
@@ -227,6 +265,11 @@ export const iceShootingQuestion: Question = {
       id: 'cluster-evidence-pro',
       label: 'Justified — Evidence-Based',
       description: 'Examined the video evidence and concluded it supports justification, interpreting ambiguity charitably toward the officer',
+      prevalence: {
+        percentage: 8,
+        label: 'minority',
+        description: 'Smaller group engaging with evidence but concluding justified',
+      },
       characteristics: {
         infoSources: ['Multiple news sources', 'Primary video footage', 'Legal analysis'],
         demographicNotes: 'Smaller group that engages with evidence but reaches pro-justification conclusion',
@@ -252,6 +295,11 @@ export const iceShootingQuestion: Question = {
       id: 'cluster-evidence-con',
       label: 'Not Justified — Evidence-Based',
       description: 'Examined the video evidence and concluded it contradicts official claims about the threat level',
+      prevalence: {
+        percentage: 22,
+        label: 'significant',
+        description: 'Evidence-focused viewers including some cross-partisan voices',
+      },
       characteristics: {
         infoSources: ['CNN', 'Washington Post', 'ABC News', 'Primary video footage'],
         demographicNotes: 'Includes journalists, analysts, and some cross-partisan voices like Tucker Carlson',
@@ -284,6 +332,11 @@ export const iceShootingQuestion: Question = {
       id: 'cluster-distrust',
       label: 'Not Justified — Distrusts Government',
       description: 'Views government accounts as not credible by default; conclusion is largely independent of specific evidence',
+      prevalence: {
+        percentage: 45,
+        label: 'majority',
+        description: 'Primarily Democratic voters with institutional distrust on law enforcement',
+      },
       characteristics: {
         infoSources: ['Civil liberties organizations', 'Reform advocacy groups', 'Alternative media'],
         demographicNotes: 'Quinnipiac poll: 91% of Democrats said the shooting was not justified',

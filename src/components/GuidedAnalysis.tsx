@@ -3,6 +3,7 @@ import { Question } from '../types';
 import { ExecutiveSummary } from './ExecutiveSummary';
 import { StructureDiagram } from './StructureDiagram';
 import { GroupsOverview } from './GroupsOverview';
+import { PollingDistribution } from './PollingDistribution';
 import { AssertionCard } from './AssertionCard';
 import { SummaryFooter } from './SummaryFooter';
 import { MediaEcosystem } from './MediaEcosystem';
@@ -46,7 +47,15 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
             whyControversial={question.executiveSummary.whyControversial}
             coreQuestion={question.text}
             previewInsight={question.executiveSummary.previewInsight}
+            pollingSummary={question.executiveSummary.pollingSummary}
           />
+        </section>
+      )}
+
+      {/* Step 1.5: Polling Distribution (below executive summary/core question) */}
+      {question.pollingData && (
+        <section>
+          <PollingDistribution pollingData={question.pollingData} />
         </section>
       )}
 
@@ -189,6 +198,10 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
           <MediaEcosystem
             clusters={question.clusters}
             topLevelBeliefs={question.topLevelBeliefs}
+            framingComparison={question.framingComparison}
+            beliefTrueLabel={question.mediaEcosystemConfig?.beliefTrueLabel}
+            beliefFalseLabel={question.mediaEcosystemConfig?.beliefFalseLabel}
+            keyPatternInsight={question.mediaEcosystemConfig?.keyPatternInsight}
           />
         </section>
       )}
@@ -198,8 +211,8 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
         <section>
           <BeliefCoalitions
             relatedDivides={question.relatedDivides}
-            believesTrueLabel="Believes justified"
-            believesFalseLabel="Believes not justified"
+            believesTrueLabel={question.mediaEcosystemConfig?.beliefTrueLabel ? `Believes "${question.mediaEcosystemConfig.beliefTrueLabel}"` : "Believes justified"}
+            believesFalseLabel={question.mediaEcosystemConfig?.beliefFalseLabel ? `Believes "${question.mediaEcosystemConfig.beliefFalseLabel}"` : "Believes not justified"}
           />
         </section>
       )}

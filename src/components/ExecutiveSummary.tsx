@@ -5,6 +5,7 @@ interface ExecutiveSummaryProps {
   whyControversial: string;
   coreQuestion: string;
   previewInsight: string;
+  pollingSummary?: string;
 }
 
 export function ExecutiveSummary({
@@ -14,6 +15,7 @@ export function ExecutiveSummary({
   whyControversial,
   coreQuestion,
   previewInsight,
+  pollingSummary,
 }: ExecutiveSummaryProps) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
@@ -47,6 +49,13 @@ export function ExecutiveSummary({
           </h2>
           <p className="text-lg font-medium text-warm-black">{coreQuestion}</p>
         </div>
+
+        {/* Polling summary - below core question */}
+        {pollingSummary && (
+          <p className="text-sm text-warm-muted italic border-l-2 border-gray-200 pl-3">
+            {pollingSummary}
+          </p>
+        )}
 
         {/* What this analysis will show */}
         <div className="border-t border-gray-100 pt-4">

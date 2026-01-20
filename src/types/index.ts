@@ -48,6 +48,20 @@ export interface ExecutiveSummaryData {
   whatHappened: string;
   whyControversial: string;
   previewInsight: string;
+  pollingSummary?: string; // Brief note about polling distribution, e.g., "Polling shows 61% oppose"
+}
+
+export interface PollingSegment {
+  label: string; // e.g., "Support ban", "Oppose ban", "Unsure"
+  percentage: number;
+  color: string; // Tailwind color class or hex
+}
+
+export interface PollingData {
+  source: string; // e.g., "Pew Research, March 2025"
+  sourceUrl?: string;
+  segments: PollingSegment[];
+  note?: string; // Additional context about the polling
 }
 
 export interface TopLevelBelief {
@@ -68,6 +82,19 @@ export interface RelatedDivide {
   correlation?: 'strong' | 'moderate' | 'weak';
 }
 
+export interface FramingComparison {
+  sideALabel: string; // e.g., "Official/Conservative framing"
+  sideAFraming: string[]; // Array of framing examples
+  sideBLabel: string; // e.g., "Investigative/Progressive framing"
+  sideBFraming: string[]; // Array of framing examples
+}
+
+export interface MediaEcosystemConfig {
+  beliefTrueLabel: string; // e.g., "Justified", "Yes, ban", "Support tariffs"
+  beliefFalseLabel: string; // e.g., "Not Justified", "No, don't ban", "Oppose tariffs"
+  keyPatternInsight: string; // Dynamic insight about the media pattern
+}
+
 export interface Question {
   id: string;
   text: string;
@@ -79,6 +106,9 @@ export interface Question {
   claims?: Claim[]; // High-level claims that group assertions
   topLevelBeliefs?: TopLevelBelief[]; // Each group's overall answer to the core question
   relatedDivides?: RelatedDivide[]; // Other issues where these groups also diverge
+  framingComparison?: FramingComparison; // How different sides frame the issue
+  mediaEcosystemConfig?: MediaEcosystemConfig; // Labels and insight for media ecosystem section
+  pollingData?: PollingData; // Public opinion polling data
 }
 
 export interface RepresentativeArticle {
@@ -89,10 +119,17 @@ export interface RepresentativeArticle {
   framingNote: string; // How this article frames the issue, what it emphasizes
 }
 
+export interface ClusterPrevalence {
+  percentage?: number; // Approximate percentage of population, if known
+  label: 'majority' | 'significant' | 'minority' | 'small'; // Qualitative size
+  description?: string; // e.g., "~30% of Americans" or "Primarily among executives"
+}
+
 export interface ClusterDefinition {
   id: string;
   label: string; // e.g., "Group A"
   description: string; // Brief description of this belief cluster's overall stance
+  prevalence?: ClusterPrevalence; // How common this viewpoint is
   characteristics?: {
     infoSources?: string[]; // Where this group tends to get information
     demographicNotes?: string; // Neutral demographic observations

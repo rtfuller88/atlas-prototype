@@ -25,6 +25,13 @@ const BELIEF_BG_COLORS: Record<BeliefState, string> = {
   mixed: 'bg-amber-50 border-amber-200',
 };
 
+const PREVALENCE_LABELS: Record<string, { label: string; color: string }> = {
+  majority: { label: 'Majority', color: 'bg-blue-100 text-blue-700' },
+  significant: { label: 'Significant', color: 'bg-purple-100 text-purple-700' },
+  minority: { label: 'Minority', color: 'bg-gray-100 text-gray-600' },
+  small: { label: 'Small', color: 'bg-gray-100 text-gray-500' },
+};
+
 export function GroupsOverview({ clusters, coreQuestion, topLevelBeliefs }: GroupsOverviewProps) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -80,6 +87,22 @@ export function GroupsOverview({ clusters, coreQuestion, topLevelBeliefs }: Grou
               <p className="text-xs text-warm-muted italic">
                 {cluster.description}
               </p>
+
+              {/* Prevalence indicator */}
+              {cluster.prevalence && (
+                <div className="flex items-center gap-2 mt-2">
+                  <span className={`text-xs px-2 py-0.5 rounded font-medium ${PREVALENCE_LABELS[cluster.prevalence.label]?.color || 'bg-gray-100 text-gray-600'}`}>
+                    {cluster.prevalence.percentage
+                      ? `~${cluster.prevalence.percentage}%`
+                      : PREVALENCE_LABELS[cluster.prevalence.label]?.label || cluster.prevalence.label}
+                  </span>
+                  {cluster.prevalence.description && (
+                    <span className="text-xs text-warm-muted">
+                      {cluster.prevalence.description}
+                    </span>
+                  )}
+                </div>
+              )}
 
               {cluster.characteristics?.infoSources && (
                 <p className="text-xs text-warm-muted mt-2">

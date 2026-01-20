@@ -1,9 +1,13 @@
 import { useState } from 'react';
-import { ClusterDefinition, TopLevelBelief, BeliefState } from '../types';
+import { ClusterDefinition, TopLevelBelief, BeliefState, FramingComparison } from '../types';
 
 interface MediaEcosystemProps {
   clusters: ClusterDefinition[];
   topLevelBeliefs?: TopLevelBelief[];
+  framingComparison?: FramingComparison;
+  beliefTrueLabel?: string; // e.g., "Justified", "Yes", "Support"
+  beliefFalseLabel?: string; // e.g., "Not Justified", "No", "Oppose"
+  keyPatternInsight?: string; // Dynamic key pattern text
 }
 
 const BELIEF_COLORS: Record<BeliefState, string> = {
@@ -13,7 +17,14 @@ const BELIEF_COLORS: Record<BeliefState, string> = {
   mixed: '#D97706',
 };
 
-export function MediaEcosystem({ clusters, topLevelBeliefs }: MediaEcosystemProps) {
+export function MediaEcosystem({
+  clusters,
+  topLevelBeliefs,
+  framingComparison,
+  beliefTrueLabel = 'Justified',
+  beliefFalseLabel = 'Not Justified',
+  keyPatternInsight
+}: MediaEcosystemProps) {
   const [expandedGroup, setExpandedGroup] = useState<string | null>(null);
 
   // Group clusters by belief (true = justified, false = not justified)
@@ -41,11 +52,6 @@ export function MediaEcosystem({ clusters, topLevelBeliefs }: MediaEcosystemProp
 
   // Find overlapping sources
   const overlappingSources = justifiedSources.filter(s => notJustifiedSources.includes(s));
-
-  // Check if any group has representative articles
-  const hasRepresentativeArticles = clusters.some(
-    c => c.characteristics?.representativeArticles && c.characteristics.representativeArticles.length > 0
-  );
 
   const renderGroupCard = (cluster: ClusterDefinition, bgColor: string, borderColor: string, tagColor: string) => {
     const isExpanded = expandedGroup === cluster.id;
@@ -132,7 +138,7 @@ export function MediaEcosystem({ clusters, topLevelBeliefs }: MediaEcosystemProp
               style={{ backgroundColor: BELIEF_COLORS.true }}
             />
             <h3 className="text-sm font-semibold text-warm-black">
-              Groups concluding "Justified"
+              Groups concluding "{beliefTrueLabel}"
             </h3>
           </div>
 
@@ -151,7 +157,7 @@ export function MediaEcosystem({ clusters, topLevelBeliefs }: MediaEcosystemProp
               style={{ backgroundColor: BELIEF_COLORS.false }}
             />
             <h3 className="text-sm font-semibold text-warm-black">
-              Groups concluding "Not Justified"
+              Groups concluding "{beliefFalseLabel}"
             </h3>
           </div>
 
@@ -193,7 +199,7 @@ export function MediaEcosystem({ clusters, topLevelBeliefs }: MediaEcosystemProp
       )}
 
       {/* Framing comparison section */}
-      {hasRepresentativeArticles && (
+      {framingComparison && (
         <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6">
           <div className="flex items-start gap-3">
             <span className="text-amber-500 text-lg">📰</span>
@@ -208,15 +214,19 @@ export function MediaEcosystem({ clusters, topLevelBeliefs }: MediaEcosystemProp
               <div className="space-y-3">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div className="bg-white rounded p-3">
-                    <p className="text-xs font-medium text-green-700 mb-1">Official/Conservative framing:</p>
+                    <p className="text-xs font-medium text-green-700 mb-1">{framingComparison.sideALabel}:</p>
                     <p className="text-xs text-warm-muted">
-                      "Driver attempted to run over federal officers" • "Domestic terrorism" • "Interfering with lawful enforcement"
+                      {framingComparison.sideAFraming.map((f, i) => (
+                        <span key={i}>"{f}"{i < framingComparison.sideAFraming.length - 1 ? ' • ' : ''}</span>
+                      ))}
                     </p>
                   </div>
                   <div className="bg-white rounded p-3">
-                    <p className="text-xs font-medium text-red-700 mb-1">Investigative/Progressive framing:</p>
+                    <p className="text-xs font-medium text-red-700 mb-1">{framingComparison.sideBLabel}:</p>
                     <p className="text-xs text-warm-muted">
-                      "Community observer whistling to warn neighbors" • "Video contradicts official account" • "U.S. citizen, mother, poet"
+                      {framingComparison.sideBFraming.map((f, i) => (
+                        <span key={i}>"{f}"{i < framingComparison.sideBFraming.length - 1 ? ' • ' : ''}</span>
+                      ))}
                     </p>
                   </div>
                 </div>
@@ -232,17 +242,14 @@ export function MediaEcosystem({ clusters, topLevelBeliefs }: MediaEcosystemProp
       )}
 
       {/* Key insight */}
-      <div className="border-t border-gray-100 pt-4">
-        <p className="text-sm text-warm-muted italic">
-          <span className="font-medium text-warm-black">Key pattern:</span>{' '}
-          Groups relying on <span className="text-green-700">official government statements</span> and{' '}
-          <span className="text-green-700">law enforcement associations</span> tend to conclude the shooting was justified.
-          Groups relying on <span className="text-red-700">investigative journalism</span> and{' '}
-          <span className="text-red-700">primary video analysis</span> tend to conclude it was not.
-          The <span className="text-blue-700">evidence-based groups</span> on both sides share some sources —
-          showing that even the same evidence can support different conclusions depending on how ambiguity is interpreted.
-        </p>
-      </div>
+      {keyPatternInsight && (
+        <div className="border-t border-gray-100 pt-4">
+          <p className="text-sm text-warm-muted italic">
+            <span className="font-medium text-warm-black">Key pattern:</span>{' '}
+            {keyPatternInsight}
+          </p>
+        </div>
+      )}
     </div>
   );
 }
