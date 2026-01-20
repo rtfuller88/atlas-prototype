@@ -117,6 +117,11 @@ export interface RepresentativeArticle {
   outlet: string;
   url: string;
   framingNote: string; // How this article frames the issue, what it emphasizes
+  // Optional fields for enhanced feed experience
+  contentType?: 'article' | 'video' | 'opinion' | 'breaking';
+  publishedDate?: string; // e.g., "2 hours ago"
+  excerpt?: string; // 1-2 sentence preview
+  pullQuote?: string; // Actual quote from the article
 }
 
 export interface ClusterPrevalence {

@@ -9,6 +9,7 @@ interface GroupsOverviewProps {
     belief: BeliefState;
     summary: string; // One-line summary of their position
   }[];
+  onSeeTheirFeed?: (cluster: ClusterDefinition) => void;
 }
 
 const BELIEF_COLORS: Record<BeliefState, string> = {
@@ -32,7 +33,7 @@ const PREVALENCE_LABELS: Record<string, { label: string; color: string }> = {
   small: { label: 'Small', color: 'bg-gray-100 text-gray-500' },
 };
 
-export function GroupsOverview({ clusters, coreQuestion, topLevelBeliefs }: GroupsOverviewProps) {
+export function GroupsOverview({ clusters, coreQuestion, topLevelBeliefs, onSeeTheirFeed }: GroupsOverviewProps) {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <h2 className="text-xs font-medium uppercase tracking-wide text-warm-muted mb-2">
@@ -110,6 +111,26 @@ export function GroupsOverview({ clusters, coreQuestion, topLevelBeliefs }: Grou
                   {cluster.characteristics.infoSources.slice(0, 2).join(', ')}
                   {cluster.characteristics.infoSources.length > 2 && '...'}
                 </p>
+              )}
+
+              {/* See their feed button */}
+              {onSeeTheirFeed && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onSeeTheirFeed(cluster);
+                  }}
+                  disabled={!cluster.characteristics?.representativeArticles?.length}
+                  className={`mt-3 w-full px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    cluster.characteristics?.representativeArticles?.length
+                      ? 'bg-white hover:bg-gray-50 text-warm-black border border-gray-300 hover:border-gray-400'
+                      : 'bg-gray-100 text-gray-400 cursor-not-allowed border border-gray-200'
+                  }`}
+                >
+                  {cluster.characteristics?.representativeArticles?.length
+                    ? 'See their feed'
+                    : 'No feed available'}
+                </button>
               )}
             </div>
           );

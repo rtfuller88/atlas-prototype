@@ -1,4 +1,5 @@
-import { Question } from '../types';
+import { useState } from 'react';
+import { Question, ClusterDefinition } from '../types';
 import { ExecutiveSummary } from './ExecutiveSummary';
 import { StructureDiagram } from './StructureDiagram';
 import { GroupsOverview } from './GroupsOverview';
@@ -7,6 +8,7 @@ import { AssertionCard } from './AssertionCard';
 import { SummaryFooter } from './SummaryFooter';
 import { MediaEcosystem } from './MediaEcosystem';
 import { BeliefCoalitions } from './BeliefCoalitions';
+import { FeedModal } from './FeedModal';
 
 // Status styles matching StructureDiagram
 const STATUS_STYLES = {
@@ -41,6 +43,17 @@ interface GuidedAnalysisProps {
 }
 
 export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
+  // Feed modal state
+  const [feedModalCluster, setFeedModalCluster] = useState<ClusterDefinition | null>(null);
+
+  const handleSeeTheirFeed = (cluster: ClusterDefinition) => {
+    setFeedModalCluster(cluster);
+  };
+
+  const handleCloseFeedModal = () => {
+    setFeedModalCluster(null);
+  };
+
   // Handle claim click - scroll to that claim's section
   const handleClaimClick = (claimId: string) => {
     const element = document.getElementById(`claim-${claimId}`);
@@ -95,6 +108,7 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
             clusters={question.clusters}
             coreQuestion={question.text}
             topLevelBeliefs={question.topLevelBeliefs}
+            onSeeTheirFeed={handleSeeTheirFeed}
           />
         </section>
       )}
@@ -181,6 +195,13 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
       <section>
         <SummaryFooter insight={question.summaryInsight} />
       </section>
+
+      {/* Feed Modal */}
+      <FeedModal
+        isOpen={feedModalCluster !== null}
+        onClose={handleCloseFeedModal}
+        cluster={feedModalCluster}
+      />
     </div>
   );
 }
