@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Question } from '../types';
 import { ExecutiveSummary } from './ExecutiveSummary';
 import { StructureDiagram } from './StructureDiagram';
@@ -9,18 +8,48 @@ import { SummaryFooter } from './SummaryFooter';
 import { MediaEcosystem } from './MediaEcosystem';
 import { BeliefCoalitions } from './BeliefCoalitions';
 
+// Status styles matching StructureDiagram
+const STATUS_STYLES = {
+  agreed: {
+    bg: 'bg-green-50',
+    border: 'border-green-200',
+    dot: 'bg-green-500',
+    text: 'text-green-700',
+    label: 'Broadly Agreed',
+    description: 'Most groups accept this claim, though they may interpret it differently.',
+  },
+  disputed: {
+    bg: 'bg-amber-50',
+    border: 'border-amber-200',
+    dot: 'bg-amber-500',
+    text: 'text-amber-700',
+    label: 'Disputed',
+    description: 'Groups disagree on this claim — this is where the real debate lies.',
+  },
+  uncertain: {
+    bg: 'bg-gray-50',
+    border: 'border-gray-200',
+    dot: 'bg-gray-400',
+    text: 'text-gray-600',
+    label: 'Uncertain',
+    description: "Even experts aren't sure about this claim yet.",
+  },
+};
+
 interface GuidedAnalysisProps {
   question: Question;
 }
 
 export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
-  const [activeClaimId, setActiveClaimId] = useState<string | null>(null);
+  // Handle claim click - scroll to that claim's section
+  const handleClaimClick = (claimId: string) => {
+    const element = document.getElementById(`claim-${claimId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
 
-  const agreedAssertions = question.assertions.filter(a => a.category === 'agreed');
-  const disputedAssertions = question.assertions.filter(a => a.category === 'disputed');
-  const uncertainAssertions = question.assertions.filter(a => a.category === 'uncertain');
-
-  // Get assertions for the active claim
+  // Get assertions for a specific claim
   const getAssertionsForClaim = (claimId: string) => {
     const claim = question.claims?.find(c => c.id === claimId);
     if (!claim) return [];
@@ -59,22 +88,7 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
         </section>
       )}
 
-      {/* Step 2: Structure Overview */}
-      {question.claims && question.claims.length > 0 && (
-        <section>
-          <StructureDiagram
-            question={question.text}
-            claims={claimData}
-            onClaimClick={(id) => setActiveClaimId(activeClaimId === id ? null : id)}
-            activeClaimId={activeClaimId || undefined}
-          />
-          <p className="text-sm text-warm-muted text-center mt-3">
-            Click a claim above to see its supporting assertions, or scroll down for the full analysis.
-          </p>
-        </section>
-      )}
-
-      {/* Step 3: Groups Overview */}
+      {/* Step 2: Groups Overview (moved before structure diagram) */}
       {question.topLevelBeliefs && question.topLevelBeliefs.length > 0 && (
         <section>
           <GroupsOverview
@@ -85,114 +99,60 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
         </section>
       )}
 
-      {/* Claim detail view (if a claim is selected) */}
-      {activeClaimId && (
-        <section className="bg-blue-50 border border-blue-200 rounded-xl p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-semibold text-warm-black">
-              {question.claims?.find(c => c.id === activeClaimId)?.label}
-            </h3>
-            <button
-              onClick={() => setActiveClaimId(null)}
-              className="text-sm text-blue-600 hover:text-blue-800"
-            >
-              Close
-            </button>
-          </div>
-          <p className="text-warm-muted mb-4">
-            {question.claims?.find(c => c.id === activeClaimId)?.description}
+      {/* Step 3: Structure Overview */}
+      {question.claims && question.claims.length > 0 && (
+        <section>
+          <StructureDiagram
+            question={question.text}
+            claims={claimData}
+            onClaimClick={handleClaimClick}
+          />
+          <p className="text-sm text-warm-muted text-center mt-3">
+            Click any claim above to jump to its detailed analysis below.
           </p>
-          <div className="space-y-3">
-            {getAssertionsForClaim(activeClaimId).map((assertion) => (
-              <AssertionCard
-                key={assertion.id}
-                assertion={assertion}
-                clusters={question.clusters}
-              />
-            ))}
-          </div>
         </section>
       )}
 
-      {/* Step 3: Where there's agreement */}
-      <section>
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-3 h-3 rounded-full bg-green-500" />
-            <h2 className="text-lg font-semibold text-warm-black">
-              Where there is broad agreement
-            </h2>
-          </div>
-          <p className="text-warm-muted">
-            Before diving into disagreements, notice what most groups actually agree on.
-            This is often more than the public debate suggests.
-          </p>
-        </div>
-        <div className="space-y-3">
-          {agreedAssertions.map((assertion) => (
-            <AssertionCard
-              key={assertion.id}
-              assertion={assertion}
-              clusters={question.clusters}
-            />
-          ))}
-        </div>
-      </section>
+      {/* Step 4: Detailed analysis of each claim */}
+      {question.claims && question.claims.map((claim) => {
+        const style = STATUS_STYLES[claim.status];
+        const assertions = getAssertionsForClaim(claim.id);
 
-      {/* Step 4: The Crux — where disagreement lies */}
-      <section>
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-3 h-3 rounded-full bg-amber-500" />
-            <h2 className="text-lg font-semibold text-warm-black">
-              Where the real disagreement lies
-            </h2>
-            <span className="text-xs font-medium text-amber-600 bg-amber-100 px-2 py-0.5 rounded">
-              The crux
-            </span>
-          </div>
-          <p className="text-warm-muted">
-            These are the specific assertions where groups diverge. For each one, we show
-            <em> why</em> they disagree — whether it's about facts, interpretation, or values.
-          </p>
-        </div>
-        <div className="space-y-3">
-          {disputedAssertions.map((assertion) => (
-            <AssertionCard
-              key={assertion.id}
-              assertion={assertion}
-              clusters={question.clusters}
-            />
-          ))}
-        </div>
-      </section>
+        return (
+          <section
+            key={claim.id}
+            id={`claim-${claim.id}`}
+            className={`rounded-xl border-2 ${style.border} ${style.bg} p-6`}
+          >
+            <div className="mb-4">
+              <div className="flex items-center gap-2 mb-2">
+                <span className={`w-3 h-3 rounded-full ${style.dot}`} />
+                <span className={`text-xs font-medium ${style.text}`}>{style.label}</span>
+              </div>
+              <h2 className="text-lg font-semibold text-warm-black mb-2">
+                {claim.label}
+              </h2>
+              <p className="text-warm-muted text-sm mb-2">
+                {claim.description}
+              </p>
+              <p className="text-xs text-warm-muted italic">
+                {style.description}
+              </p>
+            </div>
+            <div className="space-y-3">
+              {assertions.map((assertion) => (
+                <AssertionCard
+                  key={assertion.id}
+                  assertion={assertion}
+                  clusters={question.clusters}
+                />
+              ))}
+            </div>
+          </section>
+        );
+      })}
 
-      {/* Step 5: What remains uncertain */}
-      <section>
-        <div className="mb-4">
-          <div className="flex items-center gap-2 mb-2">
-            <span className="w-3 h-3 rounded-full bg-gray-400" />
-            <h2 className="text-lg font-semibold text-warm-black">
-              What remains genuinely uncertain
-            </h2>
-          </div>
-          <p className="text-warm-muted">
-            Some questions don't yet have clear answers — even experts aren't sure.
-            Recognizing uncertainty is part of understanding the issue honestly.
-          </p>
-        </div>
-        <div className="space-y-3">
-          {uncertainAssertions.map((assertion) => (
-            <AssertionCard
-              key={assertion.id}
-              assertion={assertion}
-              clusters={question.clusters}
-            />
-          ))}
-        </div>
-      </section>
-
-      {/* Step 6: Media Ecosystem */}
+      {/* Step 5: Media Ecosystem */}
       {question.topLevelBeliefs && question.topLevelBeliefs.length > 0 && (
         <section>
           <MediaEcosystem
@@ -206,7 +166,7 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
         </section>
       )}
 
-      {/* Step 7: Belief Coalitions */}
+      {/* Step 6: Belief Coalitions */}
       {question.relatedDivides && question.relatedDivides.length > 0 && (
         <section>
           <BeliefCoalitions
@@ -217,7 +177,7 @@ export function GuidedAnalysis({ question }: GuidedAnalysisProps) {
         </section>
       )}
 
-      {/* Step 8: Summary insight */}
+      {/* Step 7: Summary insight */}
       <section>
         <SummaryFooter insight={question.summaryInsight} />
       </section>
