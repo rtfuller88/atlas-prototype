@@ -77,9 +77,9 @@ export function FeedModal({ isOpen, onClose, cluster }: FeedModalProps) {
         aria-hidden="true"
       />
 
-      {/* Modal panel */}
+      {/* Modal panel - full height on mobile, 90vh on desktop */}
       <div
-        className={`absolute inset-x-0 bottom-0 h-[90vh] bg-gray-50 rounded-t-2xl shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${
+        className={`absolute inset-x-0 bottom-0 h-full sm:h-[90vh] bg-gray-50 sm:rounded-t-2xl shadow-2xl transform transition-transform duration-300 ease-out flex flex-col ${
           isAnimating ? 'translate-y-0' : 'translate-y-full'
         }`}
         role="dialog"
@@ -94,8 +94,8 @@ export function FeedModal({ isOpen, onClose, cluster }: FeedModalProps) {
           <FeedView cluster={cluster} />
         </div>
 
-        {/* Footer hint */}
-        <div className="px-6 py-3 bg-white border-t border-gray-200 text-center">
+        {/* Footer hint - hidden on mobile */}
+        <div className="hidden sm:block px-6 py-3 bg-white border-t border-gray-200 text-center">
           <p className="text-xs text-warm-muted">
             Press <kbd className="px-1.5 py-0.5 bg-gray-100 rounded text-xs font-mono">Esc</kbd> or click outside to close
           </p>
