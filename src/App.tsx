@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';
 import { rtoQuestion } from './data/rto';
 import { iceShootingQuestion } from './data/ice-shooting';
@@ -20,6 +21,11 @@ const STORIES: Record<string, Question> = {
 function StoryPage() {
   const { id } = useParams<{ id: string }>();
   const question = id ? STORIES[id] : null;
+
+  // Scroll to top on navigation
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
 
   if (!question) {
     return (
