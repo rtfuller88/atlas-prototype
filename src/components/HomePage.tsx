@@ -67,8 +67,8 @@ export function HomePage() {
           </p>
         </div>
 
-        {/* Story Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {/* Story List */}
+        <div className="grid grid-cols-1 gap-4">
           {stories.map((story) => (
             <StoryCard key={story.id} story={story} />
           ))}

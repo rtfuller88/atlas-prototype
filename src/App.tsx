@@ -1,26 +1,12 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';
-import { rtoQuestion } from './data/rto';
-import { iceShootingQuestion } from './data/ice-shooting';
-import { tiktokBanQuestion } from './data/tiktok-ban';
-import { tariffsQuestion } from './data/tariffs';
-import { socialMediaKidsQuestion } from './data/social-media-kids';
+import { QUESTIONS } from './data/questions';
 import { GuidedAnalysis } from './components/GuidedAnalysis';
 import { HomePage } from './components/HomePage';
-import { Question } from './types';
-
-// Story data registry
-const STORIES: Record<string, Question> = {
-  'ice-shooting': iceShootingQuestion,
-  'tiktok-ban': tiktokBanQuestion,
-  'tariffs': tariffsQuestion,
-  'rto-mandate': rtoQuestion,
-  'social-media-kids': socialMediaKidsQuestion,
-};
 
 function StoryPage() {
   const { id } = useParams<{ id: string }>();
-  const question = id ? STORIES[id] : null;
+  const question = id ? QUESTIONS[id] : null;
 
   // Scroll to top on navigation
   useEffect(() => {

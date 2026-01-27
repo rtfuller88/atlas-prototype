@@ -1,4 +1,5 @@
 import { RepresentativeArticle } from '../../types';
+import { OUTLET_COLORS } from '../../constants/outlets';
 
 interface NewsCardItemProps {
   article: RepresentativeArticle;
@@ -20,37 +21,6 @@ function getFaviconUrl(url: string): string {
   if (!domain) return '';
   return `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
 }
-
-// Known outlet brand colors for visual distinction
-const OUTLET_COLORS: Record<string, string> = {
-  'Fox News': '#003366',
-  'CNN': '#CC0000',
-  'MSNBC': '#0089D0',
-  'Washington Post': '#231F20',
-  'New York Times': '#000000',
-  'ABC News': '#000000',
-  'NBC News': '#FF6600',
-  'CBS News': '#1A1A1A',
-  'NPR': '#EC1C24',
-  'AP News': '#FF322E',
-  'Reuters': '#FF8000',
-  'Breitbart': '#F4511E',
-  'The Daily Wire': '#1B3A57',
-  'Newsmax': '#004B8D',
-  'The Guardian': '#052962',
-  'BBC': '#BB1919',
-  'Politico': '#FF0000',
-  'The Hill': '#26456E',
-  'Axios': '#000000',
-  'Bloomberg': '#000000',
-  'Department of Homeland Security': '#003366',
-  'Legal Information Institute': '#B31B1B',
-  'The Intercept': '#00AA00',
-  'ProPublica': '#000000',
-  'Mother Jones': '#D64541',
-  'Jacobin': '#AA0000',
-  'Tucker Carlson': '#1A365D',
-};
 
 const CONTENT_TYPE_BADGES: Record<string, { label: string; color: string }> = {
   video: { label: 'VIDEO', color: 'bg-red-600 text-white' },
