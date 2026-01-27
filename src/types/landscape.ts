@@ -31,7 +31,7 @@ export interface MatrixCell {
 
 export type WindowOption = '10d' | '21d';
 
-export type LandscapeViewMode = 'matrix' | 'cluster-agenda';
+export type LandscapeViewMode = 'matrix' | 'cluster-agenda' | 'topic-list';
 
 export type MatrixNormalization = 'absolute' | 'row' | 'column';
 

@@ -21,7 +21,7 @@ export function DivergenceSignals({ signals, clusters }: DivergenceSignalsProps)
           Narrative Divergence Signals
         </h2>
         <p className="text-sm text-warm-muted mt-1">
-          Neutral observations about how different media clusters cover — or don't cover — the same events. These patterns reveal editorial priorities, not correctness.
+          Where coverage patterns diverge across clusters.
         </p>
       </div>
 

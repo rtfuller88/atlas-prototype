@@ -66,10 +66,7 @@ export function ClusterAgendaView({
       <div className="mb-4">
         <h2 className="text-xl font-semibold text-warm-black">Cluster Agenda</h2>
         <p className="text-sm text-warm-muted mt-1">
-          What each media cluster is prioritizing — ranked by coverage intensity.
-        </p>
-        <p className="text-xs text-warm-muted italic mt-1">
-          This view shows what this cluster emphasizes most relative to other topics (cluster-normalized).
+          Each cluster's priorities, ranked by coverage intensity.
         </p>
       </div>
 

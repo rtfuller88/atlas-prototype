@@ -20,7 +20,7 @@ export function MatrixCellView({ cell, clusterColor, isSelected, onClick, normMa
     return (
       <button
         onClick={onClick}
-        className={`flex items-center justify-center gap-1 w-full h-full min-h-[56px] rounded transition-colors ${
+        className={`flex items-center justify-center gap-1 w-full h-full min-h-[56px] rounded transition-colors bg-absent-hatch ${
           isSelected ? 'bg-blue-50' : 'hover:bg-gray-50'
         }`}
       >

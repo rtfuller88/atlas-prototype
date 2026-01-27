@@ -12,15 +12,13 @@ export function LandscapeHeader({ windowDescription, activeWindow }: LandscapeHe
         Narrative Landscape
       </h1>
       <p className="text-warm-muted mt-1">
-        What different media clusters are actually emphasizing right now — {windowDescription}
-      </p>
-      <p className="text-xs text-warm-muted mt-0.5 italic">
-        Coverage patterns, not truth assessments
+        This shows how different media clusters emphasize topics — not what's true or important.
       </p>
 
       {/* Window toggle */}
       <div className="flex items-center gap-2 mt-3">
         <span className="text-xs text-warm-muted">Window:</span>
+        <span className="text-xs text-gray-400 mr-1">{windowDescription}</span>
         <div className="inline-flex rounded-md border border-gray-200 overflow-hidden text-xs">
           <button
             disabled

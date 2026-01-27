@@ -1,15 +1,20 @@
 import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { narrativeLandscapeData, getCellsForTopic } from '../../data/landscape';
-import type { WindowOption, LandscapeViewMode } from '../../types';
+import type { WindowOption, LandscapeViewMode, MatrixNormalization } from '../../types';
 import { LandscapeHeader } from './LandscapeHeader';
 import { AboutAnalysis } from './AboutAnalysis';
 import { ViewToggle } from './ViewToggle';
 import { TopicClusterMatrix } from './TopicClusterMatrix';
 import { ClusterAgendaView } from './ClusterAgendaView';
+import { TopicListView } from './TopicListView';
 import { DivergenceSignals } from './DivergenceSignals';
 import { LegacyClusterDetails } from './LegacyClusterDetails';
 import { TopicDrilldownPanel } from './TopicDrilldownPanel';
+
+function getDefaultView(): LandscapeViewMode {
+  return window.matchMedia('(min-width: 768px)').matches ? 'matrix' : 'topic-list';
+}
 
 export function NarrativeLandscapePage() {
   useEffect(() => {
@@ -21,7 +26,8 @@ export function NarrativeLandscapePage() {
 
   const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
   const [activeWindow] = useState<WindowOption>('21d');
-  const [activeView, setActiveView] = useState<LandscapeViewMode>('matrix');
+  const [activeView, setActiveView] = useState<LandscapeViewMode>(getDefaultView);
+  const [normalization, setNormalization] = useState<MatrixNormalization>('row');
 
   const selectedTopic = selectedTopicId
     ? topics.find((t) => t.id === selectedTopicId) ?? null
@@ -70,6 +76,18 @@ export function NarrativeLandscapePage() {
             matrix={matrix}
             onCellClick={handleCellClick}
             selectedTopicId={selectedTopicId}
+            normalization={normalization}
+            onNormalizationChange={setNormalization}
+          />
+        ) : activeView === 'topic-list' ? (
+          <TopicListView
+            topics={topics}
+            clusters={clusters}
+            matrix={matrix}
+            normalization={normalization}
+            onNormalizationChange={setNormalization}
+            onTopicClick={handleCellClick}
+            onSwitchToMatrix={() => setActiveView('matrix')}
           />
         ) : (
           <ClusterAgendaView

@@ -1,21 +1,26 @@
-import { useMemo, useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import type { LandscapeTopic, MediaCluster, MatrixCell, MatrixNormalization } from '../../types';
 import { MatrixCellView } from './MatrixCell';
 
-const NORM_LABELS: Record<MatrixNormalization, string> = {
+export const NORM_LABELS: Record<MatrixNormalization, string> = {
   absolute: 'Absolute',
-  row: 'Across Clusters',
-  column: 'Within Cluster',
+  row: 'Compare clusters (this topic)',
+  column: 'Compare topics (this cluster)',
 };
 
-const NORM_HELP: Record<MatrixNormalization, string> = {
-  absolute:
-    'Bars show coverage intensity on a 0–10 scale. Compare any cell to any other.',
-  row:
-    'Bars compare across clusters for each topic. The longest bar in each row = the cluster that covers this topic most.',
-  column:
-    'Bars compare within each cluster. The longest bar in each column = the topic that cluster covers most.',
+export const NORM_HELP_MAIN: Record<MatrixNormalization, string> = {
+  absolute: 'Raw coverage intensity on a 0–10 scale. Best used for detailed inspection.',
+  row: 'Compare how much each cluster covers the same topic.',
+  column: 'Compare which topics a cluster emphasizes most.',
 };
+
+const NORM_HELP_DETAIL: Record<MatrixNormalization, string> = {
+  absolute: '(Compare any cell to any other.)',
+  row: '(Longest bar in each row = the cluster pushing this topic most.)',
+  column: '(Longest bar in each column = the topic this cluster focuses on most.)',
+};
+
+export const NORM_MODES: MatrixNormalization[] = ['row', 'column', 'absolute'];
 
 interface TopicClusterMatrixProps {
   topics: LandscapeTopic[];
@@ -23,6 +28,8 @@ interface TopicClusterMatrixProps {
   matrix: MatrixCell[];
   onCellClick: (topicId: string) => void;
   selectedTopicId: string | null;
+  normalization: MatrixNormalization;
+  onNormalizationChange: (mode: MatrixNormalization) => void;
 }
 
 export function TopicClusterMatrix({
@@ -31,8 +38,11 @@ export function TopicClusterMatrix({
   matrix,
   onCellClick,
   selectedTopicId,
+  normalization,
+  onNormalizationChange,
 }: TopicClusterMatrixProps) {
-  const [normalization, setNormalization] = useState<MatrixNormalization>('absolute');
+  const [hoveredTopicId, setHoveredTopicId] = useState<string | null>(null);
+  const [hoveredClusterId, setHoveredClusterId] = useState<string | null>(null);
 
   const cellMap = useMemo(() => {
     const map = new Map<string, MatrixCell>();
@@ -74,7 +84,11 @@ export function TopicClusterMatrix({
     return 10; // absolute
   }
 
-  const normModes: MatrixNormalization[] = ['absolute', 'row', 'column'];
+  function isHighlighted(topicId: string, clusterId: string): boolean {
+    if (normalization === 'row' && hoveredTopicId === topicId) return true;
+    if (normalization === 'column' && hoveredClusterId === clusterId) return true;
+    return false;
+  }
 
   return (
     <section>
@@ -83,32 +97,53 @@ export function TopicClusterMatrix({
           Topic × Cluster Matrix
         </h2>
         <p className="text-sm text-warm-muted mt-1">
-          Coverage intensity across media clusters. Click a row to explore how each cluster covers a topic.
+          Click any topic row to explore coverage details.
         </p>
+        <div className="flex items-center gap-3 text-[10px] text-gray-400 mt-2" aria-label="Momentum legend">
+          <span>↑ Emerging</span>
+          <span>→ Sustained</span>
+          <span>↓ Declining</span>
+          <span className="inline-flex items-center gap-1">
+            <span className="inline-block w-3 h-3 bg-absent-hatch border border-gray-200 rounded-sm" />
+            Ø = not meaningfully covered
+          </span>
+        </div>
       </div>
 
       {/* Normalization toggle */}
-      <div className="flex flex-wrap items-start gap-3 mb-4">
+      <div className="mb-4">
         <div className="flex items-center gap-2">
           <span className="text-xs text-warm-muted">Compare:</span>
           <div className="inline-flex rounded-md border border-gray-200 overflow-hidden text-xs">
-            {normModes.map((mode) => (
-              <button
-                key={mode}
-                onClick={() => setNormalization(mode)}
-                className={`px-3 py-1.5 font-medium transition-colors ${
-                  normalization === mode
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-white text-warm-black hover:bg-gray-50'
-                }`}
-              >
-                {NORM_LABELS[mode]}
-              </button>
-            ))}
+            {NORM_MODES.map((mode) => {
+              const isActive = normalization === mode;
+              const isAbsolute = mode === 'absolute';
+              return (
+                <button
+                  key={mode}
+                  onClick={() => onNormalizationChange(mode)}
+                  aria-label={NORM_LABELS[mode]}
+                  aria-pressed={isActive}
+                  title={isAbsolute ? 'Raw 0–10 scale for detailed comparison' : undefined}
+                  className={`px-3 py-1.5 font-medium transition-colors ${
+                    isAbsolute ? 'border-l border-gray-300' : ''
+                  } ${
+                    isActive
+                      ? 'bg-blue-600 text-white'
+                      : isAbsolute
+                        ? 'bg-white text-gray-400 hover:bg-gray-50'
+                        : 'bg-white text-warm-black hover:bg-gray-50'
+                  }`}
+                >
+                  {NORM_LABELS[mode]}{isAbsolute && <span className="text-[10px] ml-1">(Advanced)</span>}
+                </button>
+              );
+            })}
           </div>
         </div>
-        <p className="text-xs text-warm-muted italic leading-snug pt-1">
-          {NORM_HELP[normalization]}
+        <p className="text-xs text-warm-muted italic leading-snug mt-1.5">
+          {NORM_HELP_MAIN[normalization]}{' '}
+          <span className="hidden md:inline">{NORM_HELP_DETAIL[normalization]}</span>
         </p>
       </div>
 
@@ -124,29 +159,38 @@ export function TopicClusterMatrix({
           >
             {/* Header row */}
             <div className="sticky left-0 z-20 bg-warm-bg border-b border-gray-200 p-3" />
-            {clusters.map((cluster) => (
-              <div
-                key={cluster.id}
-                className="sticky top-0 z-10 bg-warm-bg border-b border-gray-200 p-3 text-center"
-              >
-                <span className={`text-xs font-semibold uppercase tracking-wide ${cluster.textClass}`}>
-                  {cluster.shortName}
-                </span>
-              </div>
-            ))}
+            {clusters.map((cluster) => {
+              const colHighlighted = normalization === 'column' && hoveredClusterId === cluster.id;
+              return (
+                <div
+                  key={cluster.id}
+                  className={`sticky top-0 z-10 border-b border-gray-200 p-3 text-center transition-colors ${
+                    colHighlighted ? 'bg-blue-50/40' : 'bg-warm-bg'
+                  }`}
+                >
+                  <span className={`text-xs font-semibold uppercase tracking-wide ${cluster.textClass} ${
+                    colHighlighted ? 'underline decoration-1 underline-offset-2' : ''
+                  }`}>
+                    {cluster.shortName}
+                  </span>
+                </div>
+              );
+            })}
 
             {/* Data rows */}
             {topics.map((topic) => {
               const isSelected = selectedTopicId === topic.id;
+              const rowHighlighted = isHighlighted(topic.id, '');
 
               return (
-                <>
+                <React.Fragment key={topic.id}>
                   {/* Topic label cell */}
                   <button
-                    key={`label-${topic.id}`}
                     onClick={() => onCellClick(topic.id)}
-                    className={`sticky left-0 z-10 bg-warm-bg border-b border-gray-100 px-3 py-2 text-left transition-colors ${
-                      isSelected ? 'bg-blue-50' : 'hover:bg-gray-50'
+                    onMouseEnter={() => setHoveredTopicId(topic.id)}
+                    onMouseLeave={() => setHoveredTopicId(null)}
+                    className={`sticky left-0 z-10 border-b border-gray-100 px-3 py-2 text-left transition-colors ${
+                      isSelected ? 'bg-blue-50' : rowHighlighted ? 'bg-gray-50' : 'bg-warm-bg hover:bg-gray-50'
                     }`}
                   >
                     <span className="text-sm font-medium text-warm-black leading-tight line-clamp-2">
@@ -157,12 +201,24 @@ export function TopicClusterMatrix({
                   {/* Cluster cells */}
                   {clusters.map((cluster) => {
                     const cell = cellMap.get(`${topic.id}::${cluster.id}`);
+                    const highlighted = isHighlighted(topic.id, cluster.id);
+
                     if (!cell) return <div key={`${topic.id}-${cluster.id}`} className="border-b border-gray-100" />;
 
                     return (
                       <div
                         key={`${topic.id}-${cluster.id}`}
-                        className="border-b border-gray-100 flex items-center justify-center"
+                        onMouseEnter={() => {
+                          setHoveredTopicId(topic.id);
+                          setHoveredClusterId(cluster.id);
+                        }}
+                        onMouseLeave={() => {
+                          setHoveredTopicId(null);
+                          setHoveredClusterId(null);
+                        }}
+                        className={`border-b border-gray-100 flex items-center justify-center transition-colors ${
+                          highlighted ? 'bg-blue-50/40' : ''
+                        }`}
                       >
                         <MatrixCellView
                           cell={cell}
@@ -174,7 +230,7 @@ export function TopicClusterMatrix({
                       </div>
                     );
                   })}
-                </>
+                </React.Fragment>
               );
             })}
           </div>
