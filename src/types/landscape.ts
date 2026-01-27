@@ -12,13 +12,38 @@ export interface MediaCluster {
 
 export type CoverageMomentum = 'emerging' | 'sustained' | 'declining' | 'absent';
 
+// --- New matrix types ---
+
+export interface LandscapeTopic {
+  id: string;
+  title: string;
+  issueSlug?: string;
+}
+
+export interface MatrixCell {
+  topicId: string;
+  clusterId: string;
+  intensity: number; // 0-10
+  momentum: CoverageMomentum;
+  frames: string[];
+  notableAbsence?: string;
+}
+
+export type WindowOption = '10d' | '21d';
+
+export type LandscapeViewMode = 'matrix' | 'cluster-agenda';
+
+export type MatrixNormalization = 'absolute' | 'row' | 'column';
+
+// --- Legacy types (used by LegacyClusterDetails) ---
+
 export interface ClusterTopicCoverage {
   topicId: string;
   topicLabel: string;
   coverageIntensity: number; // 1-10
   momentum: CoverageMomentum;
   framingKeywords: string[];
-  atlasStoryId?: string; // only set if topic maps to an existing Atlas page
+  atlasStoryId?: string;
 }
 
 export interface NotablyAbsentTopic {
@@ -32,21 +57,27 @@ export interface ClusterLandscapeEntry {
   notablyAbsent: NotablyAbsentTopic;
 }
 
+// --- Divergence signals ---
+
 export type DivergenceSignalType = 'coverage-gap' | 'framing-difference' | 'intensity-mismatch';
 
 export interface DivergenceSignal {
   id: string;
-  observation: string;
+  title: string;
+  description: string;
   involvedClusters: string[];
   involvedTopics: string[];
   signalType: DivergenceSignalType;
 }
 
+// --- Top-level data shape ---
+
 export interface NarrativeLandscapeData {
   generatedDate: string;
   windowDescription: string;
   clusters: MediaCluster[];
-  clusterEntries: ClusterLandscapeEntry[];
+  topics: LandscapeTopic[];
+  matrix: MatrixCell[];
   divergenceSignals: DivergenceSignal[];
   methodNote: string;
 }

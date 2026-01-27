@@ -1,22 +1,47 @@
-import { useEffect } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { narrativeLandscapeData } from '../../data/landscape';
-import { ClusterOverview } from './ClusterOverview';
+import { narrativeLandscapeData, getCellsForTopic } from '../../data/landscape';
+import type { WindowOption, LandscapeViewMode } from '../../types';
+import { LandscapeHeader } from './LandscapeHeader';
+import { AboutAnalysis } from './AboutAnalysis';
+import { ViewToggle } from './ViewToggle';
+import { TopicClusterMatrix } from './TopicClusterMatrix';
+import { ClusterAgendaView } from './ClusterAgendaView';
 import { DivergenceSignals } from './DivergenceSignals';
+import { LegacyClusterDetails } from './LegacyClusterDetails';
+import { TopicDrilldownPanel } from './TopicDrilldownPanel';
 
 export function NarrativeLandscapePage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const { clusters, clusterEntries, divergenceSignals, methodNote, windowDescription } =
+  const { clusters, topics, matrix, divergenceSignals, methodNote, windowDescription } =
     narrativeLandscapeData;
+
+  const [selectedTopicId, setSelectedTopicId] = useState<string | null>(null);
+  const [activeWindow] = useState<WindowOption>('21d');
+  const [activeView, setActiveView] = useState<LandscapeViewMode>('matrix');
+
+  const selectedTopic = selectedTopicId
+    ? topics.find((t) => t.id === selectedTopicId) ?? null
+    : null;
+
+  const selectedCells = selectedTopicId ? getCellsForTopic(selectedTopicId) : [];
+
+  const handleCellClick = useCallback((topicId: string) => {
+    setSelectedTopicId(topicId);
+  }, []);
+
+  const handleClosePanel = useCallback(() => {
+    setSelectedTopicId(null);
+  }, []);
 
   return (
     <div className="min-h-screen bg-warm-bg">
-      {/* Header */}
+      {/* Header bar */}
       <header className="bg-white border-b border-gray-200">
-        <div className="max-w-5xl mx-auto px-4 py-4">
+        <div className="max-w-6xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link to="/" className="text-sm text-blue-600 hover:text-blue-800">
               ← Back to stories
@@ -27,30 +52,40 @@ export function NarrativeLandscapePage() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-5xl mx-auto px-4 py-8 space-y-10">
-        {/* Page title */}
-        <div>
-          <h1 className="text-2xl font-bold text-warm-black">
-            Narrative Landscape
-          </h1>
-          <p className="text-warm-muted mt-1">
-            What different media clusters are actually emphasizing right now — {windowDescription}
-          </p>
-        </div>
+      <main className="max-w-6xl mx-auto px-4 py-8 space-y-10">
+        {/* 1. Title + subtitle + window toggle */}
+        <LandscapeHeader windowDescription={windowDescription} activeWindow={activeWindow} />
 
-        {/* Method disclaimer */}
-        <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
-          <p className="text-xs font-medium uppercase tracking-wide text-warm-muted mb-1">
-            About this analysis
-          </p>
-          <p className="text-sm text-gray-600 leading-relaxed">{methodNote}</p>
-        </div>
+        {/* 2. Collapsible method note */}
+        <AboutAnalysis methodNote={methodNote} />
 
-        {/* Cluster overview */}
-        <ClusterOverview clusters={clusters} entries={clusterEntries} />
+        {/* 3. View toggle */}
+        <ViewToggle activeView={activeView} onViewChange={setActiveView} />
 
-        {/* Divergence signals */}
+        {/* 4. Active view */}
+        {activeView === 'matrix' ? (
+          <TopicClusterMatrix
+            topics={topics}
+            clusters={clusters}
+            matrix={matrix}
+            onCellClick={handleCellClick}
+            selectedTopicId={selectedTopicId}
+          />
+        ) : (
+          <ClusterAgendaView
+            clusters={clusters}
+            topics={topics}
+            matrix={matrix}
+            onTopicClick={handleCellClick}
+            selectedTopicId={selectedTopicId}
+          />
+        )}
+
+        {/* 5. Divergence signals */}
         <DivergenceSignals signals={divergenceSignals} clusters={clusters} />
+
+        {/* 6. Legacy cluster detail (collapsible) */}
+        <LegacyClusterDetails clusters={clusters} matrix={matrix} topics={topics} />
 
         {/* Footer */}
         <footer className="text-center pt-4 pb-4">
@@ -59,6 +94,15 @@ export function NarrativeLandscapePage() {
           </p>
         </footer>
       </main>
+
+      {/* 7. Drilldown panel overlay */}
+      <TopicDrilldownPanel
+        isOpen={selectedTopicId !== null}
+        onClose={handleClosePanel}
+        topic={selectedTopic}
+        cells={selectedCells}
+        clusters={clusters}
+      />
     </div>
   );
 }

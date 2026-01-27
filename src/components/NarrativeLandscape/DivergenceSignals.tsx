@@ -25,14 +25,14 @@ export function DivergenceSignals({ signals, clusters }: DivergenceSignalsProps)
         </p>
       </div>
 
-      <div className="space-y-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         {signals.map((signal) => {
           const typeConfig = SIGNAL_TYPE_CONFIG[signal.signalType];
 
           return (
             <div
               key={signal.id}
-              className="bg-white rounded-xl shadow-sm border border-gray-200 p-5"
+              className="bg-white rounded-lg shadow-sm border border-gray-200 p-4"
             >
               {/* Type badge */}
               <div className="flex items-center gap-2 mb-2">
@@ -42,9 +42,14 @@ export function DivergenceSignals({ signals, clusters }: DivergenceSignalsProps)
                 </span>
               </div>
 
-              {/* Observation */}
-              <p className="text-sm text-warm-black leading-relaxed mb-3">
-                {signal.observation}
+              {/* Title */}
+              <h4 className="text-sm font-semibold text-warm-black mb-1">
+                {signal.title}
+              </h4>
+
+              {/* Description */}
+              <p className="text-sm text-warm-black leading-relaxed mb-3 line-clamp-3">
+                {signal.description}
               </p>
 
               {/* Involved clusters */}
