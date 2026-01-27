@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import type { MediaCluster, MatrixCell } from '../../types';
 import { MomentumBadge } from './MomentumBadge';
+import { getCellSources } from '../../data/landscapeSources';
+import { OUTLET_COLORS } from '../../constants/outlets';
 
 interface DrilldownClusterCardProps {
   cluster: MediaCluster;
@@ -69,6 +71,47 @@ export function DrilldownClusterCard({ cluster, cell, issueSlug }: DrilldownClus
           ))}
         </div>
       )}
+
+      {/* Source articles */}
+      {(() => {
+        const sources = getCellSources(cell.topicId, cell.clusterId);
+        if (sources.length === 0) return null;
+        return (
+          <div className="mt-3 pt-3 border-t border-gray-100">
+            <h5 className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">
+              Sources
+            </h5>
+            <div className="space-y-3">
+              {sources.map((article) => (
+                <div key={article.sourceId}>
+                  <div className="flex items-baseline gap-1.5">
+                    <span
+                      className="text-xs font-semibold shrink-0"
+                      style={{ color: OUTLET_COLORS[article.outlet] ?? '#6B7280' }}
+                    >
+                      {article.outlet}
+                    </span>
+                    {article.publishedDate && (
+                      <span className="text-[10px] text-gray-400">{article.publishedDate}</span>
+                    )}
+                  </div>
+                  <a
+                    href={article.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs font-medium text-blue-700 hover:text-blue-900 hover:underline leading-snug block mt-0.5"
+                  >
+                    {article.title}
+                  </a>
+                  <p className="text-[11px] leading-relaxed text-gray-500 mt-1">
+                    {article.narrativeSummary}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* Link to issue deep dive */}
       {issueSlug && (

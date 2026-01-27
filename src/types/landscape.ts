@@ -29,6 +29,15 @@ export interface MatrixCell {
   notableAbsence?: string;
 }
 
+export interface LandscapeSourceArticle {
+  sourceId: string;
+  title: string;
+  outlet: string;
+  url: string;
+  narrativeSummary: string;
+  publishedDate?: string;
+}
+
 export type WindowOption = '10d' | '21d';
 
 export type LandscapeViewMode = 'matrix' | 'cluster-agenda' | 'topic-list';
