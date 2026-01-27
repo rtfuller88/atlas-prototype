@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom'
 import { QUESTIONS } from './data/questions';
 import { GuidedAnalysis } from './components/GuidedAnalysis';
 import { HomePage } from './components/HomePage';
+import { NarrativeLandscapePage } from './components/NarrativeLandscape';
 
 function StoryPage() {
   const { id } = useParams<{ id: string }>();
@@ -67,6 +68,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/landscape" element={<NarrativeLandscapePage />} />
         <Route path="/story/:id" element={<StoryPage />} />
       </Routes>
     </BrowserRouter>

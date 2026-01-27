@@ -176,3 +176,5 @@ export const BELIEF_LABELS: Record<BeliefState, string> = {
   uncertain: 'Uncertain',
   mixed: 'Mixed views',
 };
+
+export * from './landscape';

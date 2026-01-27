@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { stories } from '../data/stories';
 import { StoryCard } from './StoryCard';
 
@@ -66,6 +67,27 @@ export function HomePage() {
             Explore current debates, see where groups agree and disagree, and understand why.
           </p>
         </div>
+
+        {/* Narrative Landscape Card */}
+        <Link
+          to="/landscape"
+          className="block mb-6 rounded-xl overflow-hidden shadow-sm border border-gray-200 hover:shadow-md transition-shadow"
+        >
+          <div className="bg-gradient-to-r from-gray-900 to-gray-700 p-5">
+            <div className="flex items-center gap-2 mb-2">
+              <span className="text-xs font-semibold uppercase tracking-wide text-gray-400">
+                New
+              </span>
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
+            </div>
+            <h3 className="text-lg font-semibold text-white mb-1">
+              Narrative Landscape
+            </h3>
+            <p className="text-sm text-gray-300">
+              See what different media ecosystem clusters are actually emphasizing right now — and where their coverage diverges.
+            </p>
+          </div>
+        </Link>
 
         {/* Story List */}
         <div className="grid grid-cols-1 gap-4">
