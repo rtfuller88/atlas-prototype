@@ -1,5 +1,4 @@
 import { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import { narrativeLandscapeData, getCellsForTopic } from '../../data/landscape';
 import type { WindowOption, LandscapeViewMode, MatrixNormalization } from '../../types';
 import { useIsMobile } from '../../hooks/useIsMobile';
@@ -16,11 +15,7 @@ function getDefaultView(): LandscapeViewMode {
   return window.matchMedia('(min-width: 768px)').matches ? 'matrix' : 'topic-list';
 }
 
-export function NarrativeLandscapePage() {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
+export function NarrativeLandscapeView() {
   const { clusters, topics, matrix, divergenceSignals, methodNote, windowDescription } =
     narrativeLandscapeData;
 
@@ -52,20 +47,7 @@ export function NarrativeLandscapePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-warm-bg">
-      {/* Header bar */}
-      <header className="bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link to="/" className="text-sm text-blue-600 hover:text-blue-800">
-              ← Back to stories
-            </Link>
-            <span className="text-xs text-warm-muted">Project Atlas</span>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
+    <>
       <main className="max-w-6xl mx-auto px-4 py-8 space-y-10">
         {/* 1. Title + subtitle + window toggle */}
         <LandscapeHeader windowDescription={windowDescription} activeWindow={activeWindow} />
@@ -118,7 +100,7 @@ export function NarrativeLandscapePage() {
         </footer>
       </main>
 
-      {/* 7. Drilldown panel overlay */}
+      {/* Drilldown panel overlay */}
       <TopicDrilldownPanel
         isOpen={selectedTopicId !== null}
         onClose={handleClosePanel}
@@ -126,6 +108,6 @@ export function NarrativeLandscapePage() {
         cells={selectedCells}
         clusters={clusters}
       />
-    </div>
+    </>
   );
 }

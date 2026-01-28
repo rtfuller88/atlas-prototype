@@ -1,1 +1,1 @@
-export { NarrativeLandscapePage } from './NarrativeLandscapePage';
+export { NarrativeLandscapeView } from './NarrativeLandscapeView';

@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
-import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Link, Navigate, useParams } from 'react-router-dom';
 import { QUESTIONS } from './data/questions';
 import { GuidedAnalysis } from './components/GuidedAnalysis';
-import { HomePage } from './components/HomePage';
-import { NarrativeLandscapePage } from './components/NarrativeLandscape';
+import { HomeLayout } from './components/HomeLayout';
+import { NarrativeLandscapeView } from './components/NarrativeLandscape';
+import { TrendingStoriesView } from './components/TrendingStoriesView';
 
 function StoryPage() {
   const { id } = useParams<{ id: string }>();
@@ -19,7 +20,7 @@ function StoryPage() {
       <div className="min-h-screen bg-warm-bg">
         <header className="bg-white border-b border-gray-200">
           <div className="max-w-3xl mx-auto px-4 py-4">
-            <Link to="/" className="text-sm text-blue-600 hover:text-blue-800">
+            <Link to="/stories" className="text-sm text-blue-600 hover:text-blue-800">
               ← Back to stories
             </Link>
           </div>
@@ -40,7 +41,7 @@ function StoryPage() {
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-3xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <Link to="/" className="text-sm text-blue-600 hover:text-blue-800">
+            <Link to="/stories" className="text-sm text-blue-600 hover:text-blue-800">
               ← Back to stories
             </Link>
             <span className="text-xs text-warm-muted">Project Atlas</span>
@@ -67,9 +68,12 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/landscape" element={<NarrativeLandscapePage />} />
+        <Route element={<HomeLayout />}>
+          <Route index element={<NarrativeLandscapeView />} />
+          <Route path="stories" element={<TrendingStoriesView />} />
+        </Route>
         <Route path="/story/:id" element={<StoryPage />} />
+        <Route path="/landscape" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
