@@ -10,7 +10,6 @@ import { TopicClusterMatrix } from './TopicClusterMatrix';
 import { ClusterAgendaView } from './ClusterAgendaView';
 import { TopicListView } from './TopicListView';
 import { DivergenceSignals } from './DivergenceSignals';
-import { LegacyClusterDetails } from './LegacyClusterDetails';
 import { TopicDrilldownPanel } from './TopicDrilldownPanel';
 
 function getDefaultView(): LandscapeViewMode {
@@ -110,9 +109,6 @@ export function NarrativeLandscapePage() {
 
         {/* 5. Divergence signals */}
         <DivergenceSignals signals={divergenceSignals} clusters={clusters} />
-
-        {/* 6. Legacy cluster detail (collapsible) */}
-        <LegacyClusterDetails clusters={clusters} matrix={matrix} topics={topics} />
 
         {/* Footer */}
         <footer className="text-center pt-4 pb-4">

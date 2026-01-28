@@ -45,28 +45,6 @@ export type LandscapeViewMode = 'matrix' | 'cluster-agenda' | 'topic-list';
 
 export type MatrixNormalization = 'absolute' | 'row' | 'column';
 
-// --- Legacy types (used by LegacyClusterDetails) ---
-
-export interface ClusterTopicCoverage {
-  topicId: string;
-  topicLabel: string;
-  coverageIntensity: number; // 1-10
-  momentum: CoverageMomentum;
-  framingKeywords: string[];
-  atlasStoryId?: string;
-}
-
-export interface NotablyAbsentTopic {
-  topicId: string;
-  observation: string;
-}
-
-export interface ClusterLandscapeEntry {
-  clusterId: string;
-  topicCoverage: ClusterTopicCoverage[];
-  notablyAbsent: NotablyAbsentTopic;
-}
-
 // --- Divergence signals ---
 
 export type DivergenceSignalType = 'coverage-gap' | 'framing-difference' | 'intensity-mismatch';
