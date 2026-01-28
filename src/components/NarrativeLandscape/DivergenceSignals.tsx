@@ -1,3 +1,4 @@
+import { useState, useRef, useEffect, useCallback } from 'react';
 import type { DivergenceSignal, DivergenceSignalType, MediaCluster } from '../../types';
 
 const SIGNAL_TYPE_CONFIG: Record<DivergenceSignalType, { icon: string; label: string }> = {
@@ -13,6 +14,32 @@ interface DivergenceSignalsProps {
 
 export function DivergenceSignals({ signals, clusters }: DivergenceSignalsProps) {
   const clusterMap = new Map(clusters.map((c) => [c.id, c]));
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
+  const [clampedIds, setClampedIds] = useState<Set<string>>(new Set());
+  const descRefs = useRef<Map<string, HTMLParagraphElement>>(new Map());
+
+  const detectClamped = useCallback(() => {
+    const clamped = new Set<string>();
+    descRefs.current.forEach((el, id) => {
+      if (el.scrollHeight > el.clientHeight + 1) clamped.add(id);
+    });
+    setClampedIds(clamped);
+  }, []);
+
+  useEffect(() => {
+    detectClamped();
+    window.addEventListener('resize', detectClamped);
+    return () => window.removeEventListener('resize', detectClamped);
+  }, [detectClamped, signals]);
+
+  function toggleExpand(id: string) {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
 
   return (
     <section>
@@ -48,9 +75,28 @@ export function DivergenceSignals({ signals, clusters }: DivergenceSignalsProps)
               </h4>
 
               {/* Description */}
-              <p className="text-sm text-warm-black leading-relaxed mb-3 line-clamp-3">
+              <p
+                ref={(el) => {
+                  if (el) descRefs.current.set(signal.id, el);
+                  else descRefs.current.delete(signal.id);
+                }}
+                className={`text-sm text-warm-black leading-relaxed mb-1 ${
+                  expandedIds.has(signal.id) ? '' : 'line-clamp-[7]'
+                }`}
+              >
                 {signal.description}
               </p>
+              {(clampedIds.has(signal.id) || expandedIds.has(signal.id)) && (
+                <button
+                  onClick={() => toggleExpand(signal.id)}
+                  className="text-xs text-blue-600 hover:text-blue-800 font-medium mb-3"
+                >
+                  {expandedIds.has(signal.id) ? 'Show less' : 'Read more'}
+                </button>
+              )}
+              {!clampedIds.has(signal.id) && !expandedIds.has(signal.id) && (
+                <div className="mb-3" />
+              )}
 
               {/* Involved clusters */}
               <div className="flex flex-wrap gap-1.5">

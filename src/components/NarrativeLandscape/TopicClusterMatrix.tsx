@@ -156,8 +156,8 @@ export function TopicClusterMatrix({
           <div
             className="grid"
             style={{
-              gridTemplateColumns: '200px ' + clusters.map(() => '1fr').join(' '),
-              minWidth: 640,
+              gridTemplateColumns: `${isMobile ? '160px' : '200px'} ` + clusters.map(() => '1fr').join(' '),
+              minWidth: isMobile ? 520 : 640,
             }}
           >
             {/* Header row */}
