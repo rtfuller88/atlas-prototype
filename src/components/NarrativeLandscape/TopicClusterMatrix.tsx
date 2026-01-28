@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react';
 import type { LandscapeTopic, MediaCluster, MatrixCell, MatrixNormalization } from '../../types';
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { MatrixCellView } from './MatrixCell';
+import { ClusterSourcesModal } from './ClusterSourcesModal';
 
 export const NORM_LABELS: Record<MatrixNormalization, string> = {
   absolute: 'Absolute',
@@ -45,6 +46,7 @@ export function TopicClusterMatrix({
   const isMobile = useIsMobile();
   const [hoveredTopicId, setHoveredTopicId] = useState<string | null>(null);
   const [hoveredClusterId, setHoveredClusterId] = useState<string | null>(null);
+  const [selectedClusterId, setSelectedClusterId] = useState<string | null>(null);
   const visibleModes = isMobile ? NORM_MODES.filter((m) => m !== 'absolute') : NORM_MODES;
 
   const cellMap = useMemo(() => {
@@ -165,18 +167,23 @@ export function TopicClusterMatrix({
             {clusters.map((cluster) => {
               const colHighlighted = normalization === 'column' && hoveredClusterId === cluster.id;
               return (
-                <div
+                <button
                   key={cluster.id}
-                  className={`sticky top-0 z-10 border-b border-gray-200 p-3 text-center transition-colors ${
+                  onClick={() => setSelectedClusterId(cluster.id)}
+                  className={`sticky top-0 z-10 border-b border-gray-200 p-3 text-center transition-colors hover:bg-blue-50 w-full ${
                     colHighlighted ? 'bg-blue-50/40' : 'bg-warm-bg'
                   }`}
+                  aria-label={`View sources in ${cluster.name}`}
                 >
-                  <span className={`text-xs font-semibold uppercase tracking-wide ${cluster.textClass} ${
-                    colHighlighted ? 'underline decoration-1 underline-offset-2' : ''
-                  }`}>
-                    {cluster.shortName}
+                  <span className="flex items-center justify-center gap-1.5">
+                    <span className={`text-xs font-semibold uppercase tracking-wide ${cluster.textClass} ${
+                      colHighlighted ? 'underline decoration-1 underline-offset-2' : ''
+                    }`}>
+                      {cluster.shortName}
+                    </span>
+                    <span className="text-gray-400 group-hover:text-blue-600 text-xs transition-colors" aria-hidden="true">ⓘ</span>
                   </span>
-                </div>
+                </button>
               );
             })}
 
@@ -242,6 +249,12 @@ export function TopicClusterMatrix({
         {/* Right-edge gradient scroll hint (mobile only) */}
         <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-white to-transparent md:hidden" />
       </div>
+
+      <ClusterSourcesModal
+        isOpen={selectedClusterId !== null}
+        onClose={() => setSelectedClusterId(null)}
+        cluster={clusters.find(c => c.id === selectedClusterId) ?? null}
+      />
     </section>
   );
 }

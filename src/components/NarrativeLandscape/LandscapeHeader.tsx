@@ -47,6 +47,17 @@ export function LandscapeHeader({ windowDescription, activeWindow, activeView, o
         </div>
         </div>
 
+        {/* Region indicator */}
+        <div className="flex items-center gap-2">
+          <span className="text-xs text-warm-muted">Region:</span>
+          <span
+            className="text-xs text-gray-600"
+            title="Additional regions planned"
+          >
+            United States
+          </span>
+        </div>
+
         {/* View toggle */}
         <ViewToggle activeView={activeView} onViewChange={onViewChange} />
       </div>
