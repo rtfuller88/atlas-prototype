@@ -8,10 +8,10 @@ interface LandscapeHeaderProps {
 export function LandscapeHeader({ windowDescription, activeWindow }: LandscapeHeaderProps) {
   return (
     <div>
-      <h1 className="text-2xl font-bold text-warm-black">
+      <h2 className="text-lg font-semibold text-warm-black">
         Narrative Landscape
-      </h1>
-      <p className="text-warm-muted mt-1">
+      </h2>
+      <p className="text-sm text-warm-muted">
         This shows how different media clusters emphasize topics — not what's true or important.
       </p>
 

@@ -5,6 +5,8 @@ import { GuidedAnalysis } from './components/GuidedAnalysis';
 import { HomeLayout } from './components/HomeLayout';
 import { NarrativeLandscapeView } from './components/NarrativeLandscape';
 import { TrendingStoriesView } from './components/TrendingStoriesView';
+import { WhyThisExists } from './components/WhyThisExists';
+import { Manifesto } from './components/Manifesto';
 
 function StoryPage() {
   const { id } = useParams<{ id: string }>();
@@ -71,8 +73,10 @@ function App() {
         <Route element={<HomeLayout />}>
           <Route index element={<NarrativeLandscapeView />} />
           <Route path="stories" element={<TrendingStoriesView />} />
+          <Route path="why" element={<WhyThisExists />} />
         </Route>
         <Route path="/story/:id" element={<StoryPage />} />
+        <Route path="/manifesto" element={<Manifesto />} />
         <Route path="/landscape" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

@@ -52,10 +52,7 @@ export function NarrativeLandscapeView() {
         {/* 1. Title + subtitle + window toggle */}
         <LandscapeHeader windowDescription={windowDescription} activeWindow={activeWindow} />
 
-        {/* 2. Collapsible method note */}
-        <AboutAnalysis methodNote={methodNote} />
-
-        {/* 3. View toggle */}
+        {/* 2. View toggle */}
         <ViewToggle activeView={activeView} onViewChange={setActiveView} />
 
         {/* 4. Active view */}
@@ -91,6 +88,9 @@ export function NarrativeLandscapeView() {
 
         {/* 5. Divergence signals */}
         <DivergenceSignals signals={divergenceSignals} clusters={clusters} />
+
+        {/* 6. About this analysis */}
+        <AboutAnalysis methodNote={methodNote} />
 
         {/* Footer */}
         <footer className="text-center pt-4 pb-4">
