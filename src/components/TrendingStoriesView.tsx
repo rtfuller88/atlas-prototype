@@ -46,14 +46,18 @@ function AddTopicCard() {
 
 export function TrendingStoriesView() {
   return (
-    <main className="max-w-4xl mx-auto px-4 py-8">
-      {/* Section Header */}
-      <div className="mb-6">
-        <h2 className="text-lg font-semibold text-warm-black">Trending Stories</h2>
-        <p className="text-sm text-warm-muted">
-          Explore current debates, see where groups agree and disagree, and understand why.
-        </p>
+    <>
+      {/* Full-width page title banner */}
+      <div className="bg-blue-50">
+        <div className="max-w-4xl mx-auto px-4 py-3">
+          <h2 className="text-2xl font-bold text-warm-black">Trending Stories</h2>
+          <p className="text-sm text-warm-muted">
+            Explore current debates, see where groups agree and disagree, and understand why.
+          </p>
+        </div>
       </div>
+
+      <main className="max-w-4xl mx-auto px-4 py-8">
 
       {/* Story List */}
       <div className="grid grid-cols-1 gap-4">
@@ -72,5 +76,6 @@ export function TrendingStoriesView() {
         </p>
       </footer>
     </main>
+    </>
   );
 }

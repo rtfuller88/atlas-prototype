@@ -25,7 +25,7 @@ export function HomeLayout() {
             </p>
           </div>
         </div>
-        <div className="bg-white border-b border-gray-200">
+        <div className="bg-blue-50 border-b border-blue-100">
           <div className="max-w-6xl mx-auto px-4">
             <nav className="-mb-px flex gap-6">
               {tabs.map(({ to, label, end }) => (

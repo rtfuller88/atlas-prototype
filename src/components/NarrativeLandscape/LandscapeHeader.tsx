@@ -1,22 +1,27 @@
-import type { WindowOption } from '../../types';
+import type { WindowOption, LandscapeViewMode } from '../../types';
+import { ViewToggle } from './ViewToggle';
 
 interface LandscapeHeaderProps {
   windowDescription: string;
   activeWindow: WindowOption;
+  activeView: LandscapeViewMode;
+  onViewChange: (view: LandscapeViewMode) => void;
 }
 
-export function LandscapeHeader({ windowDescription, activeWindow }: LandscapeHeaderProps) {
+export function LandscapeHeader({ windowDescription, activeWindow, activeView, onViewChange }: LandscapeHeaderProps) {
   return (
     <div>
-      <h2 className="text-lg font-semibold text-warm-black">
+      <h2 className="text-2xl font-bold text-warm-black">
         Narrative Landscape
       </h2>
       <p className="text-sm text-warm-muted">
         This shows how different media clusters emphasize topics — not what's true or important.
       </p>
 
-      {/* Window toggle */}
-      <div className="flex items-center gap-2 mt-3">
+      {/* Controls */}
+      <div className="mt-3 space-y-2">
+        {/* Window toggle */}
+        <div className="flex items-center gap-2">
         <span className="text-xs text-warm-muted">Window:</span>
         <span className="text-xs text-gray-400 mr-1">{windowDescription}</span>
         <div className="inline-flex rounded-md border border-gray-200 overflow-hidden text-xs">
@@ -40,6 +45,10 @@ export function LandscapeHeader({ windowDescription, activeWindow }: LandscapeHe
             21 days
           </button>
         </div>
+        </div>
+
+        {/* View toggle */}
+        <ViewToggle activeView={activeView} onViewChange={onViewChange} />
       </div>
     </div>
   );

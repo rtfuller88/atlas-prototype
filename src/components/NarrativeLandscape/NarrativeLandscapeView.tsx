@@ -4,7 +4,6 @@ import type { WindowOption, LandscapeViewMode, MatrixNormalization } from '../..
 import { useIsMobile } from '../../hooks/useIsMobile';
 import { LandscapeHeader } from './LandscapeHeader';
 import { AboutAnalysis } from './AboutAnalysis';
-import { ViewToggle } from './ViewToggle';
 import { TopicClusterMatrix } from './TopicClusterMatrix';
 import { ClusterAgendaView } from './ClusterAgendaView';
 import { TopicListView } from './TopicListView';
@@ -48,14 +47,16 @@ export function NarrativeLandscapeView() {
 
   return (
     <>
-      <main className="max-w-6xl mx-auto px-4 py-8 space-y-10">
-        {/* 1. Title + subtitle + window toggle */}
-        <LandscapeHeader windowDescription={windowDescription} activeWindow={activeWindow} />
+      {/* Full-width page title banner */}
+      <div className="bg-blue-50">
+        <div className="max-w-5xl mx-auto px-4 py-3">
+          <LandscapeHeader windowDescription={windowDescription} activeWindow={activeWindow} activeView={activeView} onViewChange={setActiveView} />
+        </div>
+      </div>
 
-        {/* 2. View toggle */}
-        <ViewToggle activeView={activeView} onViewChange={setActiveView} />
+      <main className="max-w-5xl mx-auto px-4 py-8 space-y-10">
 
-        {/* 4. Active view */}
+        {/* Active view */}
         {activeView === 'matrix' ? (
           <TopicClusterMatrix
             topics={topics}

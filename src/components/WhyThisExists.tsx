@@ -1,7 +1,14 @@
 export function WhyThisExists() {
   return (
-    <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
-      <h1 className="text-2xl font-bold text-warm-black">Why This Exists</h1>
+    <>
+      {/* Full-width page title banner */}
+      <div className="bg-blue-50">
+        <div className="max-w-3xl mx-auto px-4 py-3">
+          <h1 className="text-2xl font-bold text-warm-black">Why This Exists</h1>
+        </div>
+      </div>
+
+      <main className="max-w-3xl mx-auto px-4 py-8 space-y-6">
 
       {/* The Problem */}
       <section className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
@@ -115,5 +122,6 @@ export function WhyThisExists() {
         .
       </p>
     </main>
+    </>
   );
 }
