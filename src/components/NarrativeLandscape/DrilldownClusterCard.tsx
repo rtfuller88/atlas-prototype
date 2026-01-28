@@ -41,6 +41,13 @@ export function DrilldownClusterCard({ cluster, cell, issueSlug }: DrilldownClus
         <MomentumBadge momentum={cell.momentum} />
       </div>
 
+      {/* Cluster narrative synopsis */}
+      {cell.clusterNarrative && (
+        <p className="text-xs leading-relaxed text-gray-600 mb-3">
+          {cell.clusterNarrative}
+        </p>
+      )}
+
       {/* Intensity bar */}
       <div className="flex items-center gap-2 mb-2">
         <span className="text-xs text-warm-muted w-14 shrink-0">Intensity</span>

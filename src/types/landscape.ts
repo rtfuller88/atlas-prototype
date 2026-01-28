@@ -26,6 +26,7 @@ export interface MatrixCell {
   intensity: number; // 0-10
   momentum: CoverageMomentum;
   frames: string[];
+  clusterNarrative?: string; // 1-2 sentence synopsis of this cluster's overall position/framing
   notableAbsence?: string;
 }
 
