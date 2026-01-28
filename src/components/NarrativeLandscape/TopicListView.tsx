@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import type { LandscapeTopic, MediaCluster, MatrixCell, MatrixNormalization } from '../../types';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import { NORM_LABELS, NORM_HELP_MAIN, NORM_MODES } from './TopicClusterMatrix';
 
 interface TopicListViewProps {
@@ -55,6 +56,9 @@ export function TopicListView({
     return map;
   }, [topics, clusters, cellMap]);
 
+  const isMobile = useIsMobile();
+  const visibleModes = isMobile ? NORM_MODES.filter((m) => m !== 'absolute') : NORM_MODES;
+
   function getNormMax(topicId: string, clusterId: string): number {
     if (normalization === 'row') return rowMaxMap.get(topicId) ?? 1;
     if (normalization === 'column') return colMaxMap.get(clusterId) ?? 1;
@@ -68,7 +72,7 @@ export function TopicListView({
         <div className="flex items-center gap-2">
           <span className="text-xs text-warm-muted">Compare:</span>
           <div className="inline-flex rounded-md border border-gray-200 overflow-hidden text-xs">
-            {NORM_MODES.map((mode) => {
+            {visibleModes.map((mode) => {
               const isActive = normalization === mode;
               const isAbsolute = mode === 'absolute';
               return (

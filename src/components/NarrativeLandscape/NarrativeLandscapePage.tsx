@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { narrativeLandscapeData, getCellsForTopic } from '../../data/landscape';
 import type { WindowOption, LandscapeViewMode, MatrixNormalization } from '../../types';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import { LandscapeHeader } from './LandscapeHeader';
 import { AboutAnalysis } from './AboutAnalysis';
 import { ViewToggle } from './ViewToggle';
@@ -28,6 +29,14 @@ export function NarrativeLandscapePage() {
   const [activeWindow] = useState<WindowOption>('21d');
   const [activeView, setActiveView] = useState<LandscapeViewMode>(getDefaultView);
   const [normalization, setNormalization] = useState<MatrixNormalization>('row');
+  const isMobile = useIsMobile();
+
+  // Reset to 'row' if user is on mobile and somehow in 'absolute' mode
+  useEffect(() => {
+    if (isMobile && normalization === 'absolute') {
+      setNormalization('row');
+    }
+  }, [isMobile, normalization]);
 
   const selectedTopic = selectedTopicId
     ? topics.find((t) => t.id === selectedTopicId) ?? null

@@ -1,5 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import type { LandscapeTopic, MediaCluster, MatrixCell, MatrixNormalization } from '../../types';
+import { useIsMobile } from '../../hooks/useIsMobile';
 import { MatrixCellView } from './MatrixCell';
 
 export const NORM_LABELS: Record<MatrixNormalization, string> = {
@@ -41,8 +42,10 @@ export function TopicClusterMatrix({
   normalization,
   onNormalizationChange,
 }: TopicClusterMatrixProps) {
+  const isMobile = useIsMobile();
   const [hoveredTopicId, setHoveredTopicId] = useState<string | null>(null);
   const [hoveredClusterId, setHoveredClusterId] = useState<string | null>(null);
+  const visibleModes = isMobile ? NORM_MODES.filter((m) => m !== 'absolute') : NORM_MODES;
 
   const cellMap = useMemo(() => {
     const map = new Map<string, MatrixCell>();
@@ -99,13 +102,13 @@ export function TopicClusterMatrix({
         <p className="text-sm text-warm-muted mt-1">
           Click any topic row to explore coverage details.
         </p>
-        <div className="flex items-center gap-3 text-[10px] text-gray-400 mt-2" aria-label="Momentum legend">
-          <span>↑ Emerging</span>
-          <span>→ Sustained</span>
-          <span>↓ Declining</span>
-          <span className="inline-flex items-center gap-1">
-            <span className="inline-block w-3 h-3 bg-absent-hatch border border-gray-200 rounded-sm" />
-            Ø = not meaningfully covered
+        <div className="flex flex-wrap items-center gap-1.5 mt-2" aria-label="Momentum legend">
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-green-100 text-green-700">↑ Emerging</span>
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-blue-100 text-blue-700">→ Sustained</span>
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-100 text-gray-600">↓ Declining</span>
+          <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[10px] font-medium bg-gray-50 text-gray-400 border border-gray-200">
+            <span className="inline-block w-2.5 h-2.5 bg-absent-hatch border border-gray-200 rounded-sm" />
+            Not covered
           </span>
         </div>
       </div>
@@ -115,7 +118,7 @@ export function TopicClusterMatrix({
         <div className="flex items-center gap-2">
           <span className="text-xs text-warm-muted">Compare:</span>
           <div className="inline-flex rounded-md border border-gray-200 overflow-hidden text-xs">
-            {NORM_MODES.map((mode) => {
+            {visibleModes.map((mode) => {
               const isActive = normalization === mode;
               const isAbsolute = mode === 'absolute';
               return (
