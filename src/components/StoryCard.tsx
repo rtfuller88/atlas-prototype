@@ -59,6 +59,7 @@ export function StoryCard({ story }: StoryCardProps) {
       {/* Metadata */}
       <div className="flex items-center justify-between text-xs text-warm-muted mb-4">
         <span>{story.groupCount} groups · {story.assertionCount} assertions</span>
+        <span>Analyzed {story.date}</span>
       </div>
 
       {/* At-a-Glance Mini-Bars */}
@@ -66,18 +67,6 @@ export function StoryCard({ story }: StoryCardProps) {
         <MiniBar label="Agreement" value={story.atAGlance.agreement} color="bg-agreed" />
         <MiniBar label="Uncertainty" value={story.atAGlance.uncertainty} color="bg-uncertain" />
         <MiniBar label="Divergence" value={story.atAGlance.narrativeDivergence} color="bg-red-500" />
-      </div>
-
-      {/* Disagreement Driver Chips */}
-      <div className="flex flex-wrap gap-1.5 mb-3">
-        {story.atAGlance.drivers.map((driver, i) => (
-          <span
-            key={driver}
-            className={`text-xs text-white px-2 py-0.5 rounded-full ${driverColors[driver]} ${i === 0 ? 'ring-1 ring-offset-1 ring-gray-300' : 'opacity-70'}`}
-          >
-            {driver}
-          </span>
-        ))}
       </div>
 
       {/* Debate Crux */}

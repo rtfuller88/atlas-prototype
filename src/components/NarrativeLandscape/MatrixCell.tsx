@@ -1,10 +1,10 @@
 import type { MatrixCell as MatrixCellType, CoverageMomentum } from '../../types';
 
-const MOMENTUM_ICON: Record<CoverageMomentum, string> = {
-  emerging: '↑',
-  sustained: '→',
-  declining: '↓',
-  absent: 'Ø',
+const MOMENTUM_STYLE: Record<CoverageMomentum, { icon: string; color: string }> = {
+  emerging: { icon: '↑', color: 'text-green-600' },
+  sustained: { icon: '→', color: 'text-blue-500' },
+  declining: { icon: '↓', color: 'text-gray-400' },
+  absent: { icon: 'Ø', color: 'text-gray-300' },
 };
 
 interface MatrixCellProps {
@@ -54,7 +54,7 @@ export function MatrixCellView({ cell, clusterColor, isSelected, onClick, normMa
           {cell.intensity}
         </span>
       </div>
-      <span className="text-[10px] text-gray-400 mt-0.5">{MOMENTUM_ICON[cell.momentum]}</span>
+      <span className={`text-[10px] font-semibold mt-0.5 ${MOMENTUM_STYLE[cell.momentum].color}`}>{MOMENTUM_STYLE[cell.momentum].icon}</span>
     </button>
   );
 }

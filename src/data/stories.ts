@@ -43,7 +43,7 @@ export const stories: StoryMeta[] = [
       narrativeDivergence: 5,
       drivers: ['Interpretation', 'Values', 'Fact', 'Confidence'],
     },
-    debateCrux: 'Mostly interpretation + values — prior trust in institutions shapes how ambiguous evidence is read.',
+    debateCrux: 'Groups split over whether video evidence shows a genuine lethal threat, whether officers had viable alternatives to deadly force, and whether a federal investigation can be trusted to be impartial.',
     agreements: [
       'Renee Good, a U.S. citizen, was shot and killed by ICE agent Jonathan Ross',
       'Good was a community observer, not a target of immigration enforcement',
@@ -71,7 +71,7 @@ export const stories: StoryMeta[] = [
       narrativeDivergence: 5,
       drivers: ['Values', 'Fact', 'Interpretation', 'Confidence'],
     },
-    debateCrux: 'Values + fact — whether speculative security risks justify restricting 170M Americans\' speech.',
+    debateCrux: 'The core tension is whether unproven national security risks justify restricting a platform used by 170 million Americans, and whether a forced sale would actually resolve the concerns.',
     agreements: [
       'ByteDance is subject to Chinese laws that could require data sharing',
       'TikTok has approximately 170 million US users',
@@ -99,7 +99,7 @@ export const stories: StoryMeta[] = [
       narrativeDivergence: 5,
       drivers: ['Values', 'Interpretation', 'Fact', 'Confidence'],
     },
-    debateCrux: 'Values + interpretation — how you weigh short-term consumer costs against long-term strategic goals.',
+    debateCrux: 'Groups disagree on whether tariffs will revive American manufacturing or simply raise consumer prices, and whether the long-term strategic benefits justify the immediate economic costs.',
     agreements: [
       'Tariffs increase costs for American consumers and businesses',
       'US tariff rate reached the highest level in over a century',
@@ -127,7 +127,7 @@ export const stories: StoryMeta[] = [
       narrativeDivergence: 3,
       drivers: ['Interpretation', 'Values', 'Confidence', 'Fact'],
     },
-    debateCrux: 'Mostly values + interpretation — management philosophy, not missing productivity data.',
+    debateCrux: 'The dispute centers on whether in-office work genuinely improves collaboration, whether the attrition caused by mandates is an acceptable trade-off, and whether remote work has eroded company culture.',
     agreements: [
       'Employees broadly value flexibility in where they work',
       'Productivity impacts vary significantly by role and task type',
@@ -155,7 +155,7 @@ export const stories: StoryMeta[] = [
       narrativeDivergence: 3,
       drivers: ['Interpretation', 'Values', 'Fact', 'Confidence'],
     },
-    debateCrux: 'Interpretation + values — all sides agree platforms fail kids; they disagree on whether government bans are the answer.',
+    debateCrux: 'Everyone agrees platforms are failing young users, but groups disagree over whether social media actually causes the teen mental health crisis and whether age-based government bans are effective or an overreach of rights.',
     agreements: [
       'Teen mental health has worsened significantly since 2010',
       'Current platform self-regulation has failed to protect young users',
